@@ -1,0 +1,48 @@
+{
+  "name": "qualink",
+  "version": "0.1.0",
+  "description": "Collect, normalize, and relay code quality metrics from CI",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "qualink": "bin/qualink.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
+  "packageManager": "pnpm@10.29.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./bin/qualink.js",
+    "dev": "node --loader ts-node/esm src/cli/index.ts",
+    "lint": "biome check src/",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "citty": "^0.1.6",
+    "fast-xml-parser": "^4.5.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
+    "@types/node": "^24.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "vitest": "^4.0.18"
+  },
+  "keywords": [
+    "ci",
+    "code-quality",
+    "elastic",
+    "metrics"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "filePath": "src/index.ts",
+    "errorCount": 1,
+    "warningCount": 2,
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 1,
+    "messages": [
+      { "ruleId": "no-console" },
+      { "ruleId": "@typescript-eslint/no-unused-vars" },
+      { "ruleId": "@typescript-eslint/no-unused-vars" }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Roslyn",
+          "version": "4.10.0"
+        }
+      },
+      "results": [
+        { "level": "warning", "ruleId": "CS0168" },
+        { "level": "error", "ruleId": "CS8602" },
+        { "level": "warning", "ruleId": "CS0168" }
+      ]
+    }
+  ]
+}

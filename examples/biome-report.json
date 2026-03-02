@@ -1,0 +1,108 @@
+{
+  "diagnostics": [
+    {
+      "code": {
+        "value": "lint/correctness/noUnusedImports",
+        "url": "https://biomejs.dev/linter/rules/no-unused-imports/"
+      },
+      "location": {
+        "path": "src/index.ts",
+        "range": { "start": { "line": 0, "column": 7 }, "end": { "line": 0, "column": 11 } }
+      },
+      "message": "This import is unused.",
+      "severity": "error",
+      "fixable": true
+    },
+    {
+      "code": {
+        "value": "lint/correctness/noUnusedImports",
+        "url": "https://biomejs.dev/linter/rules/no-unused-imports/"
+      },
+      "location": {
+        "path": "src/utils/helpers.ts",
+        "range": { "start": { "line": 2, "column": 9 }, "end": { "line": 2, "column": 15 } }
+      },
+      "message": "This import is unused.",
+      "severity": "error",
+      "fixable": true
+    },
+    {
+      "code": {
+        "value": "lint/style/useConst",
+        "url": "https://biomejs.dev/linter/rules/use-const/"
+      },
+      "location": {
+        "path": "src/index.ts",
+        "range": { "start": { "line": 5, "column": 4 }, "end": { "line": 5, "column": 9 } }
+      },
+      "message": "This variable could be declared as const.",
+      "severity": "warning",
+      "fixable": true
+    },
+    {
+      "code": {
+        "value": "lint/suspicious/noExplicitAny",
+        "url": "https://biomejs.dev/linter/rules/no-explicit-any/"
+      },
+      "location": {
+        "path": "src/components/App.tsx",
+        "range": { "start": { "line": 10, "column": 20 }, "end": { "line": 10, "column": 23 } }
+      },
+      "message": "Unexpected any. Specify a different type.",
+      "severity": "error",
+      "fixable": false
+    },
+    {
+      "code": {
+        "value": "lint/complexity/noForEach",
+        "url": "https://biomejs.dev/linter/rules/no-for-each/"
+      },
+      "location": {
+        "path": "src/utils/helpers.ts",
+        "range": { "start": { "line": 15, "column": 0 }, "end": { "line": 15, "column": 30 } }
+      },
+      "message": "Prefer for...of instead of Array.forEach.",
+      "severity": "warning",
+      "fixable": false
+    },
+    {
+      "code": {
+        "value": "lint/correctness/noUnusedVariables",
+        "url": "https://biomejs.dev/linter/rules/no-unused-variables/"
+      },
+      "location": {
+        "path": "src/config.js",
+        "range": { "start": { "line": 3, "column": 6 }, "end": { "line": 3, "column": 12 } }
+      },
+      "message": "This variable is unused.",
+      "severity": "warning",
+      "fixable": false
+    },
+    {
+      "code": {
+        "value": "lint/a11y/useButtonType",
+        "url": "https://biomejs.dev/linter/rules/use-button-type/"
+      },
+      "location": {
+        "path": "src/components/App.tsx",
+        "range": { "start": { "line": 25, "column": 4 }, "end": { "line": 25, "column": 12 } }
+      },
+      "message": "Provide an explicit type attribute on the button element.",
+      "severity": "error",
+      "fixable": false
+    },
+    {
+      "code": {
+        "value": "lint/style/useConst",
+        "url": "https://biomejs.dev/linter/rules/use-const/"
+      },
+      "location": {
+        "path": "src/data/schema.json",
+        "range": { "start": { "line": 0, "column": 0 }, "end": { "line": 0, "column": 10 } }
+      },
+      "message": "This variable could be declared as const.",
+      "severity": "info",
+      "fixable": true
+    }
+  ]
+}
