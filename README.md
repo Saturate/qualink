@@ -71,6 +71,7 @@ If needed, you can still pass explicit values with `--repo`, `--branch`, `--comm
 Sink configuration:
 
 - `--sink elastic` (default) requires `ELASTIC_URL` and `ELASTIC_API_KEY`
+- `--sink loki` requires `LOKI_URL`. Optional: `LOKI_USERNAME`, `LOKI_PASSWORD` (basic auth), `LOKI_TENANT_ID` (`X-Scope-OrgID` header for multi-tenant setups)
 - `--sink stdout` prints normalized documents for debugging
 
 Dry run mode:

@@ -1,3 +1,4 @@
+import type { SinkConfig } from "../sinks/index.js";
 import { createSink } from "../sinks/index.js";
 import type { MetricType, NormalizedDocument } from "../types.js";
 import { CliError } from "./cli-error.js";
@@ -47,10 +48,10 @@ export async function sendToSink(
 	}
 
 	const sinkKindRaw = (envOrArg(argValue(args, "sink"), "QUALINK_SINK") ?? "elastic").toLowerCase();
-	if (sinkKindRaw !== "elastic" && sinkKindRaw !== "stdout") {
-		throw new CliError(`Unsupported sink '${sinkKindRaw}'. Expected elastic|stdout`, 2);
+	if (sinkKindRaw !== "elastic" && sinkKindRaw !== "loki" && sinkKindRaw !== "stdout") {
+		throw new CliError(`Unsupported sink '${sinkKindRaw}'. Expected elastic|loki|stdout`, 2);
 	}
-	const sinkKind: "elastic" | "stdout" = sinkKindRaw === "elastic" ? "elastic" : "stdout";
+	const sinkKind = sinkKindRaw as "elastic" | "loki" | "stdout";
 
 	const retryMax = parseNumberInput(argValue(args, "retryMax", "retry-max"), 2);
 	const retryBackoffMs = parseNumberInput(
@@ -64,20 +65,35 @@ export async function sendToSink(
 		"ELASTIC_API_KEY",
 	);
 
+	const lokiUrl = envOrArg(argValue(args, "lokiUrl", "loki-url"), "LOKI_URL");
+	const lokiUsername = envOrArg(argValue(args, "lokiUsername", "loki-username"), "LOKI_USERNAME");
+	const lokiPassword = envOrArg(argValue(args, "lokiPassword", "loki-password"), "LOKI_PASSWORD");
+	const lokiTenantId = envOrArg(argValue(args, "lokiTenantId", "loki-tenant-id"), "LOKI_TENANT_ID");
+
 	const sinkConfigBase = {
 		kind: sinkKind,
 		retryMax,
 		retryBackoffMs,
 	};
 
-	const sinkConfig =
-		sinkKind === "elastic"
-			? {
-					...sinkConfigBase,
-					...(elasticUrl ? { elasticUrl } : {}),
-					...(elasticApiKey ? { elasticApiKey } : {}),
-				}
-			: sinkConfigBase;
+	let sinkConfig: SinkConfig;
+	if (sinkKind === "elastic") {
+		sinkConfig = {
+			...sinkConfigBase,
+			...(elasticUrl ? { elasticUrl } : {}),
+			...(elasticApiKey ? { elasticApiKey } : {}),
+		};
+	} else if (sinkKind === "loki") {
+		sinkConfig = {
+			...sinkConfigBase,
+			...(lokiUrl ? { lokiUrl } : {}),
+			...(lokiUsername ? { lokiUsername } : {}),
+			...(lokiPassword ? { lokiPassword } : {}),
+			...(lokiTenantId ? { lokiTenantId } : {}),
+		};
+	} else {
+		sinkConfig = sinkConfigBase;
+	}
 
 	const sink = createSink(sinkConfig);
 
