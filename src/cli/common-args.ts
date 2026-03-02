@@ -15,6 +15,10 @@ export interface CommonArgs {
 	collectorVersion?: unknown;
 	elasticUrl?: unknown;
 	elasticApiKey?: unknown;
+	lokiUrl?: unknown;
+	lokiUsername?: unknown;
+	lokiPassword?: unknown;
+	lokiTenantId?: unknown;
 	retryMax?: unknown;
 	retryBackoffMs?: unknown;
 	allowEmpty?: unknown;
@@ -66,6 +70,10 @@ export const commonArgs = {
 	"collector-version": { type: "string" as const },
 	"elastic-url": { type: "string" as const },
 	"elastic-api-key": { type: "string" as const },
+	"loki-url": { type: "string" as const },
+	"loki-username": { type: "string" as const },
+	"loki-password": { type: "string" as const },
+	"loki-tenant-id": { type: "string" as const },
 	"retry-max": { type: "string" as const },
 	"retry-backoff-ms": { type: "string" as const },
 	"allow-empty": { type: "boolean" as const, default: false },

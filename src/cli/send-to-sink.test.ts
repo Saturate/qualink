@@ -78,6 +78,19 @@ describe("sendToSink", () => {
 		await expect(sendToSink("meta", { sink: "elastic" }, [doc])).rejects.toThrow(/ELASTIC_URL/);
 	});
 
+	it("throws when loki sink missing url", async () => {
+		const saved = process.env.LOKI_URL;
+		delete process.env.LOKI_URL;
+		try {
+			const doc = makeDummyDoc();
+			await expect(sendToSink("meta", { sink: "loki" }, [doc])).rejects.toThrow(/LOKI_URL/);
+		} finally {
+			if (saved !== undefined) {
+				process.env.LOKI_URL = saved;
+			}
+		}
+	});
+
 	it("parses string retry-max into a number", async () => {
 		const doc = makeDummyDoc();
 		// This exercises parseNumberInput with a string value — should not throw
