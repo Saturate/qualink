@@ -8,6 +8,7 @@
 steps:
   - script: npx eslint src/ --format json --output-file eslint-report.json
     displayName: Run ESLint
+    continueOnError: true
 
   - script: npx qualink collect eslint --input eslint-report.json --top-files 10
     displayName: Report ESLint metrics

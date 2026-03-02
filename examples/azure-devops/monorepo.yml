@@ -1,0 +1,51 @@
+# Monorepo: collect ESLint metrics from every pnpm workspace package.
+# PNPM_PACKAGE_NAME is auto-detected per workspace, populating the
+# "package" field so you can drill down from repo → package in Elastic.
+
+steps:
+  - script: npm install -g qualink
+    displayName: Install qualink
+
+  # Lint all workspaces, collect per-package
+  - script: >-
+      pnpm -r exec -- bash -c '
+        npx eslint . --format json --output-file eslint-report.json 2>/dev/null;
+        qualink collect eslint --input eslint-report.json --top-files 10;
+        rm -f eslint-report.json
+      '
+    displayName: Collect ESLint metrics (all packages)
+    continueOnError: true
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,web
+
+  # Or filter to only apps
+  - script: >-
+      pnpm -r --filter './apps/*' exec -- bash -c '
+        npx eslint . --format json --output-file eslint-report.json 2>/dev/null;
+        qualink collect eslint --input eslint-report.json;
+        rm -f eslint-report.json
+      '
+    displayName: Collect ESLint metrics (apps only)
+    continueOnError: true
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,web
+
+  # Coverage per workspace
+  - script: >-
+      pnpm -r exec -- bash -c '
+        if npx vitest run --coverage.enabled --coverage.reporter=json-summary 2>/dev/null; then
+          qualink collect coverage-js --input coverage/coverage-summary.json;
+        fi
+      '
+    displayName: Collect coverage (all packages)
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,coverage

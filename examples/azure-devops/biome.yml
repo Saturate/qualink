@@ -8,6 +8,7 @@
 steps:
   - script: npx biome check src/ --reporter=json > biome-report.json
     displayName: Run Biome
+    continueOnError: true
 
   - script: npx qualink collect biome --input biome-report.json
     displayName: Report Biome metrics

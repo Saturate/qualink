@@ -6,6 +6,7 @@
 
 steps:
   - run: npx eslint src/ --format json --output-file eslint-report.json
+    continue-on-error: true
 
   - run: npx qualink collect eslint --input eslint-report.json --top-files 10
     env:

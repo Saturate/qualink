@@ -12,6 +12,7 @@ steps:
       arguments: >-
         /p:ErrorLog=analyzers.sarif,version=2.1
     displayName: Build with SARIF output
+    continueOnError: true
 
   - script: npx qualink collect sarif --input analyzers.sarif
     displayName: Report SARIF metrics

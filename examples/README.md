@@ -19,6 +19,7 @@ Each example shows two options:
 | Coverage JS | [azure-devops/coverage-js.yml](azure-devops/coverage-js.yml) |
 | Coverage .NET | [azure-devops/coverage-dotnet.yml](azure-devops/coverage-dotnet.yml) |
 | Lighthouse | [azure-devops/lighthouse.yml](azure-devops/lighthouse.yml) |
+| **Monorepo** | [azure-devops/monorepo.yml](azure-devops/monorepo.yml) |
 
 ## GitHub Actions
 
@@ -30,6 +31,15 @@ Each example shows two options:
 | Coverage JS | [github-actions/coverage-js.yml](github-actions/coverage-js.yml) |
 | Coverage .NET | [github-actions/coverage-dotnet.yml](github-actions/coverage-dotnet.yml) |
 | Lighthouse | [github-actions/lighthouse.yml](github-actions/lighthouse.yml) |
+| **Monorepo** | [github-actions/monorepo.yml](github-actions/monorepo.yml) |
+
+## Monorepos
+
+For pnpm workspaces, qualink auto-detects the package name from `PNPM_PACKAGE_NAME` (set by `pnpm -r exec`). This gives you repo-level health at a glance, with drill-down into individual packages/apps.
+
+The monorepo examples show how to use `pnpm -r exec` to collect metrics from every workspace, or use `--filter` to scope to apps only.
+
+You can also set `QUALINK_PACKAGE` explicitly if you're not using pnpm.
 
 ## Sample reports
 

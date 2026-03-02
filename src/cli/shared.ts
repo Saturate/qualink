@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { basename } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { basename, resolve } from "node:path";
 import { createSink } from "../sinks/index.js";
 import type { CommonMetadata, Language, MetricType, NormalizedDocument } from "../types.js";
 import { asOptionalString, assertNonEmpty } from "../utils/assert.js";
@@ -209,6 +210,49 @@ function detectPipelineProvider(args: CommonArgs): string {
 	return "local";
 }
 
+function readPackageJsonName(): string | undefined {
+	try {
+		const pkgPath = resolve("package.json");
+		if (!existsSync(pkgPath)) {
+			return undefined;
+		}
+		const raw = JSON.parse(readFileSync(pkgPath, "utf-8")) as unknown;
+		if (typeof raw === "object" && raw !== null && "name" in raw && typeof raw.name === "string") {
+			return raw.name;
+		}
+	} catch {
+		// ignore
+	}
+	return undefined;
+}
+
+function isInsideWorkspacePackage(): boolean {
+	const gitRoot = runGit(["rev-parse", "--show-toplevel"]);
+	if (!gitRoot) {
+		return false;
+	}
+	return resolve(".") !== resolve(gitRoot);
+}
+
+function detectPackageName(args: CommonArgs): string | undefined {
+	const explicit = envOrArg(argValue(args, "package"), "QUALINK_PACKAGE");
+	if (explicit) {
+		return explicit;
+	}
+
+	const pnpmName = process.env.PNPM_PACKAGE_NAME;
+	if (pnpmName && pnpmName.trim().length > 0) {
+		return pnpmName;
+	}
+
+	// Auto-detect from ./package.json when running inside a workspace subdirectory
+	if (isInsideWorkspacePackage()) {
+		return readPackageJsonName();
+	}
+
+	return undefined;
+}
+
 export function parseLanguages(value: unknown): Language[] | undefined {
 	if (typeof value !== "string" || value.trim().length === 0) {
 		return undefined;
@@ -254,8 +298,8 @@ export function parseCommonMetadata(args: CommonArgs): CommonMetadata {
 		pipelineRunId,
 		pipelineProvider,
 		environment: environmentRaw,
-		packageName: asOptionalString(argValue(args, "package")),
-		projectName: asOptionalString(argValue(args, "project")),
+		packageName: asOptionalString(detectPackageName(args)),
+		projectName: asOptionalString(envOrArg(argValue(args, "project"), "QUALINK_PROJECT")),
 		collectorVersion,
 	};
 }

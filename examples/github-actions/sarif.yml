@@ -6,6 +6,7 @@
 
 steps:
   - run: dotnet build /p:ErrorLog=analyzers.sarif,version=2.1
+    continue-on-error: true
 
   - run: npx qualink collect sarif --input analyzers.sarif
     env:

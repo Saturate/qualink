@@ -6,6 +6,7 @@
 
 steps:
   - run: npx biome check src/ --reporter=json > biome-report.json
+    continue-on-error: true
 
   - run: npx qualink collect biome --input biome-report.json
     env:
