@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.0] - 2026-03-02
 
 ### Features
 
@@ -35,6 +35,8 @@ All notable changes to this project will be documented in this file.
 - Add CI/CD pipelines, git-cliff changelog, and GitHub repo metadata by @Saturate ([2831165](https://github.com/Saturate/qualink/commit/2831165f8657f51aaf66551ce9f83c0c76b6b440))
 
 - Bump node matrix to 22+24, require node >=22 by @Saturate ([835f152](https://github.com/Saturate/qualink/commit/835f15290eafda7adb6315376f9a52fa3a28a400))
+
+- Pre-launch audit fixes + changelog automation by @Saturate ([7de907f](https://github.com/Saturate/qualink/commit/7de907fa0ee2817c4043a0a236afd9c44f0931d5))
 
 
 ### Init
