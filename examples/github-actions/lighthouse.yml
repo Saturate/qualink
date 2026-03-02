@@ -1,0 +1,9 @@
+steps:
+  - run: npx lhci collect --url=https://staging.example.com
+
+  - run: npx qualink collect lighthouse --input .lighthouseci/lhr-*.json
+    env:
+      ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
+      ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,performance

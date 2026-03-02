@@ -1,10 +1,30 @@
 # qualink
 
+[![CI](https://github.com/Saturate/qualink/actions/workflows/ci.yml/badge.svg)](https://github.com/Saturate/qualink/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/qualink)](https://www.npmjs.com/package/qualink)
+
 Collect, normalize, and relay code quality metrics from CI.
+`qualink` standardizes code quality telemetry across repos and languages, then ships it to a sink (Elastic for now, if you need something else do a PR or a ticket).
 
----
+## Install
 
-`qualink` standardizes code quality telemetry across repos and languages, then ships it to a sink (Elastic).
+```bash
+npm install -g qualink
+pnpm add -g qualink
+bun add -g qualink
+```
+
+Or run directly:
+
+```bash
+npx qualink collect eslint --input report.json --sink stdout
+```
+
+## CI Examples
+
+Repo, branch, commit SHA, pipeline run ID, and provider are auto-detected from CI environment variables, no need to pass them manually.
+
+See the [examples/](examples/) folder for copy-paste snippets for Azure DevOps and GitHub Actions.
 
 ## CLI usage
 
@@ -22,6 +42,7 @@ qualink collect coverage-dotnet --input coverage.cobertura.xml --sink elastic --
 
 Collectors:
 
+- `biome` (Biome JSON)
 - `eslint` (ESLint JSON)
 - `lighthouse` (Lighthouse JSON)
 - `coverage-js` (Istanbul/Vitest JSON)

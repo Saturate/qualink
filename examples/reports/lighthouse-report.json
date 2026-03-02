@@ -1,0 +1,110 @@
+{
+  "lighthouseVersion": "12.4.0",
+  "requestedUrl": "https://example.com/",
+  "finalDisplayedUrl": "https://example.com/",
+  "fetchTime": "2026-02-28T10:30:00.000Z",
+  "runWarnings": [],
+  "categories": {
+    "performance": {
+      "id": "performance",
+      "title": "Performance",
+      "score": 0.91,
+      "auditRefs": [
+        { "id": "first-contentful-paint", "weight": 10 },
+        { "id": "largest-contentful-paint", "weight": 25 },
+        { "id": "total-blocking-time", "weight": 30 },
+        { "id": "cumulative-layout-shift", "weight": 25 },
+        { "id": "speed-index", "weight": 10 }
+      ]
+    },
+    "accessibility": {
+      "id": "accessibility",
+      "title": "Accessibility",
+      "score": 0.95,
+      "auditRefs": [
+        { "id": "color-contrast", "weight": 7 },
+        { "id": "image-alt", "weight": 10 },
+        { "id": "label", "weight": 7 }
+      ]
+    },
+    "best-practices": {
+      "id": "best-practices",
+      "title": "Best Practices",
+      "score": 0.98,
+      "auditRefs": [
+        { "id": "is-on-https", "weight": 5 },
+        { "id": "no-vulnerable-libraries", "weight": 7 }
+      ]
+    },
+    "seo": {
+      "id": "seo",
+      "title": "SEO",
+      "score": 0.9,
+      "auditRefs": [
+        { "id": "document-title", "weight": 5 },
+        { "id": "meta-description", "weight": 5 },
+        { "id": "viewport", "weight": 5 }
+      ]
+    }
+  },
+  "audits": {
+    "first-contentful-paint": {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "score": 0.95,
+      "numericValue": 1120,
+      "displayValue": "1.1 s"
+    },
+    "largest-contentful-paint": {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0.85,
+      "numericValue": 2340,
+      "displayValue": "2.3 s"
+    },
+    "total-blocking-time": {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "score": 0.92,
+      "numericValue": 140,
+      "displayValue": "140 ms"
+    },
+    "cumulative-layout-shift": {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "score": 0.98,
+      "numericValue": 0.012,
+      "displayValue": "0.012"
+    },
+    "speed-index": {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "score": 0.89,
+      "numericValue": 2100,
+      "displayValue": "2.1 s"
+    },
+    "color-contrast": {
+      "id": "color-contrast",
+      "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+      "score": 0,
+      "details": {
+        "type": "table",
+        "items": [
+          { "node": { "selector": ".footer-link", "snippet": "<a class=\"footer-link\">" } }
+        ]
+      }
+    }
+  },
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
+    "benchmarkIndex": 1250
+  },
+  "configSettings": {
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "cpuSlowdownMultiplier": 4
+    }
+  }
+}

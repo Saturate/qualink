@@ -1,0 +1,9 @@
+steps:
+  - run: npx eslint src/ --format json --output-file eslint-report.json
+
+  - run: npx qualink collect eslint --input eslint-report.json --top-files 10
+    env:
+      ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
+      ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,web

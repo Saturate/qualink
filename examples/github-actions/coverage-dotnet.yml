@@ -1,0 +1,9 @@
+steps:
+  - run: dotnet test --collect:"XPlat Code Coverage"
+
+  - run: npx qualink collect coverage-dotnet --input **/coverage.cobertura.xml
+    env:
+      ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
+      ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
+      QUALINK_CATEGORY: backend
+      QUALINK_TAGS: backend,dotnet

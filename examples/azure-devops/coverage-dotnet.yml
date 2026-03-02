@@ -1,0 +1,14 @@
+steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: test
+      arguments: --collect:"XPlat Code Coverage"
+    displayName: Run .NET tests with coverage
+
+  - script: npx qualink collect coverage-dotnet --input $(Agent.TempDirectory)/**/coverage.cobertura.xml
+    displayName: Report .NET coverage
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: backend
+      QUALINK_TAGS: backend,dotnet

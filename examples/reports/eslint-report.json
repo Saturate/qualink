@@ -1,0 +1,126 @@
+[
+  {
+    "filePath": "src/components/UserProfile.tsx",
+    "errorCount": 2,
+    "warningCount": 1,
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "ruleId": "no-console",
+        "severity": 2,
+        "message": "Unexpected console statement.",
+        "line": 14,
+        "column": 5,
+        "endLine": 14,
+        "endColumn": 28
+      },
+      {
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 2,
+        "message": "'response' is defined but never used.",
+        "line": 23,
+        "column": 11,
+        "endLine": 23,
+        "endColumn": 19
+      },
+      {
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "line": 8,
+        "column": 25,
+        "endLine": 8,
+        "endColumn": 28
+      }
+    ],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "src/utils/format.ts",
+    "errorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 1,
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 1,
+        "message": "'formatter' is never reassigned. Use 'const' instead.",
+        "line": 5,
+        "column": 7,
+        "endLine": 5,
+        "endColumn": 16
+      },
+      {
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "line": 12,
+        "column": 30,
+        "endLine": 12,
+        "endColumn": 33
+      }
+    ],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "src/api/client.ts",
+    "errorCount": 1,
+    "warningCount": 3,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "ruleId": "@typescript-eslint/no-floating-promises",
+        "severity": 2,
+        "message": "Promises must be awaited, end with a call to .catch, or end with a call to .then.",
+        "line": 42,
+        "column": 5,
+        "endLine": 42,
+        "endColumn": 31
+      },
+      {
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'error' is defined but never used.",
+        "line": 55,
+        "column": 14,
+        "endLine": 55,
+        "endColumn": 19
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 1,
+        "message": "Unexpected console statement.",
+        "line": 60,
+        "column": 5,
+        "endLine": 60,
+        "endColumn": 22
+      },
+      {
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "line": 38,
+        "column": 42,
+        "endLine": 38,
+        "endColumn": 45
+      }
+    ],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "src/hooks/useAuth.ts",
+    "errorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": []
+  }
+]

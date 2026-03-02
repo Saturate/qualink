@@ -1,0 +1,15 @@
+steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: build
+      arguments: >-
+        /p:ErrorLog=analyzers.sarif,version=2.1
+    displayName: Build with SARIF output
+
+  - script: npx qualink collect sarif --input analyzers.sarif
+    displayName: Report SARIF metrics
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: backend
+      QUALINK_TAGS: backend,dotnet

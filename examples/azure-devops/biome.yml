@@ -1,0 +1,11 @@
+steps:
+  - script: npx biome check src/ --reporter=json > biome-report.json
+    displayName: Run Biome
+
+  - script: npx qualink collect biome --input biome-report.json
+    displayName: Report Biome metrics
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: frontend
+      QUALINK_TAGS: frontend,biome
