@@ -1,0 +1,56 @@
+# .NET solution: collect SARIF and coverage from every project.
+# The --project flag is auto-detected from the .csproj in each directory,
+# so you get repo-level health with drill-down per project in Elastic.
+
+steps:
+  - script: npm install -g qualink
+    displayName: Install qualink
+
+  # Build with SARIF output — produces one .sarif per project in bin/
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: build
+      arguments: /p:ErrorLog=analyzers.sarif,version=2.1
+    displayName: Build solution with SARIF
+    continueOnError: true
+
+  # Collect SARIF per project
+  - script: |
+      for sarif in $(find . -path "*/bin/*" -name "analyzers.sarif"); do
+        project_dir=$(echo "$sarif" | cut -d/ -f2)
+        cd "$project_dir"
+        qualink collect sarif --input "../$sarif"
+        cd ..
+      done
+    displayName: Report SARIF metrics (per project)
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: backend
+      QUALINK_TAGS: backend,dotnet
+
+  # Run tests with coverage
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: test
+      arguments: >-
+        --collect:"XPlat Code Coverage"
+        --results-directory $(Build.SourcesDirectory)/testresults
+    displayName: Run tests with coverage
+
+  # Collect coverage per test project
+  # dotnet test creates: testresults/<ProjectName>/<guid>/coverage.cobertura.xml
+  - script: |
+      for project_dir in testresults/*/; do
+        project_name=$(basename "$project_dir" | sed 's/\.Tests$//')
+        coverage=$(find "$project_dir" -name "coverage.cobertura.xml" | head -1)
+        if [ -n "$coverage" ]; then
+          qualink collect coverage-dotnet --input "$coverage" --project "$project_name"
+        fi
+      done
+    displayName: Report coverage (per project)
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+      QUALINK_CATEGORY: backend
+      QUALINK_TAGS: backend,dotnet

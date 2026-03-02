@@ -19,7 +19,8 @@ Each example shows two options:
 | Coverage JS | [azure-devops/coverage-js.yml](azure-devops/coverage-js.yml) |
 | Coverage .NET | [azure-devops/coverage-dotnet.yml](azure-devops/coverage-dotnet.yml) |
 | Lighthouse | [azure-devops/lighthouse.yml](azure-devops/lighthouse.yml) |
-| **Monorepo** | [azure-devops/monorepo.yml](azure-devops/monorepo.yml) |
+| **Monorepo (pnpm)** | [azure-devops/monorepo.yml](azure-devops/monorepo.yml) |
+| **.NET Solution** | [azure-devops/dotnet-solution.yml](azure-devops/dotnet-solution.yml) |
 
 ## GitHub Actions
 
@@ -32,6 +33,7 @@ Each example shows two options:
 | Coverage .NET | [github-actions/coverage-dotnet.yml](github-actions/coverage-dotnet.yml) |
 | Lighthouse | [github-actions/lighthouse.yml](github-actions/lighthouse.yml) |
 | **Monorepo** | [github-actions/monorepo.yml](github-actions/monorepo.yml) |
+| **.NET Solution** | [github-actions/dotnet-solution.yml](github-actions/dotnet-solution.yml) |
 
 ## Monorepos
 

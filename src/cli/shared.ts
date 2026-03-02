@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import { createSink } from "../sinks/index.js";
 import type { CommonMetadata, Language, MetricType, NormalizedDocument } from "../types.js";
@@ -253,6 +253,33 @@ function detectPackageName(args: CommonArgs): string | undefined {
 	return undefined;
 }
 
+function readCsprojName(): string | undefined {
+	try {
+		const files = readdirSync(".");
+		const csproj = files.find((f) => f.endsWith(".csproj"));
+		if (csproj) {
+			return basename(csproj, ".csproj");
+		}
+	} catch {
+		// ignore
+	}
+	return undefined;
+}
+
+function detectProjectName(args: CommonArgs): string | undefined {
+	const explicit = envOrArg(argValue(args, "project"), "QUALINK_PROJECT");
+	if (explicit) {
+		return explicit;
+	}
+
+	// Auto-detect from .csproj when running inside a project subdirectory
+	if (isInsideWorkspacePackage()) {
+		return readCsprojName();
+	}
+
+	return undefined;
+}
+
 export function parseLanguages(value: unknown): Language[] | undefined {
 	if (typeof value !== "string" || value.trim().length === 0) {
 		return undefined;
@@ -299,7 +326,7 @@ export function parseCommonMetadata(args: CommonArgs): CommonMetadata {
 		pipelineProvider,
 		environment: environmentRaw,
 		packageName: asOptionalString(detectPackageName(args)),
-		projectName: asOptionalString(envOrArg(argValue(args, "project"), "QUALINK_PROJECT")),
+		projectName: asOptionalString(detectProjectName(args)),
 		collectorVersion,
 	};
 }
