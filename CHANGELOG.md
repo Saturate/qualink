@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file.
 
 - Add GitHub sponsor funding link by @Saturate ([6979829](https://github.com/Saturate/qualink/commit/69798297c7270e4b03770e18487a2c0e58f469d5))
 
+- Update changelog [skip ci] by @github-actions[bot] ([39437f1](https://github.com/Saturate/qualink/commit/39437f178a9579335bb51bbcd2563ad47b2543fe))
+
+- Update license year by @Saturate ([2ff1476](https://github.com/Saturate/qualink/commit/2ff14768ff3d21d5d3d54d2e9706b2c500ad96bb))
+
 
 ## [0.1.1] - 2026-03-02
 
