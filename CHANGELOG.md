@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 
 - Update license year by @Saturate ([2ff1476](https://github.com/Saturate/qualink/commit/2ff14768ff3d21d5d3d54d2e9706b2c500ad96bb))
 
+- Update changelog [skip ci] by @github-actions[bot] ([2fa39f2](https://github.com/Saturate/qualink/commit/2fa39f26264cb1b4acfe6b69fdcc3dd692096a85))
+
+- Add contributing guide by @Saturate ([28a494f](https://github.com/Saturate/qualink/commit/28a494ff66034af0e05e177accb3c3f0856b9299))
+
 
 ## [0.1.1] - 2026-03-02
 
