@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2026-03-02
+
+### Bug Fixes
+
+- Remove preinstall script that blocks non-pnpm consumers by @Saturate ([d9b240f](https://github.com/Saturate/qualink/commit/d9b240ff34854b0b0642c51c5b9994cedd694eb2))
+
+
+### Documentation
+
+- Update changelog [skip ci] by @github-actions[bot] ([096a623](https://github.com/Saturate/qualink/commit/096a623ad90f2241389bfd6fcbf5ce18e0a499e2))
+
+
 ## [0.1.0] - 2026-03-02
 
 ### Features
