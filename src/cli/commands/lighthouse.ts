@@ -1,6 +1,7 @@
 import { collectLighthouse } from "../../collectors/lighthouse.js";
+import { CliError } from "../cli-error.js";
 import { createCollectorCommand } from "../command-factory.js";
-import { CliError, loadJsonInput } from "../shared.js";
+import { loadJsonInput } from "../load-input.js";
 
 export const lighthouseCommand = createCollectorCommand({
 	name: "lighthouse",

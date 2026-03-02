@@ -1,6 +1,7 @@
 import { collectSarif } from "../../collectors/sarif.js";
 import { createCollectorCommand } from "../command-factory.js";
-import { loadJsonInput, parseLanguages } from "../shared.js";
+import { loadJsonInput } from "../load-input.js";
+import { parseLanguages } from "../parse-languages.js";
 
 function parseTopRules(value: unknown): number {
 	if (typeof value === "number") {

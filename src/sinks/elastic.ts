@@ -16,6 +16,7 @@ const INDEX_BY_TYPE: Record<MetricType, string> = {
 	"coverage-js": "codequality-coverage-js",
 	sarif: "codequality-sarif",
 	"coverage-dotnet": "codequality-coverage-dotnet",
+	meta: "codequality-meta",
 };
 
 function sleep(ms: number): Promise<void> {

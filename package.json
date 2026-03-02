@@ -33,6 +33,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",
     "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "git-cliff": "^2.12.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",

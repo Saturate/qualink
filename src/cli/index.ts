@@ -1,13 +1,14 @@
 import { defineCommand, runMain } from "citty";
+import { CliError } from "./cli-error.js";
 import {
 	biomeCommand,
 	coverageDotnetCommand,
 	coverageJsCommand,
 	eslintCommand,
 	lighthouseCommand,
+	metaCommand,
 	sarifCommand,
 } from "./commands/index.js";
-import { CliError } from "./shared.js";
 
 const collectCommand = defineCommand({
 	meta: {
@@ -32,6 +33,7 @@ const main = defineCommand({
 	},
 	subCommands: {
 		collect: collectCommand,
+		meta: metaCommand,
 	},
 });
 

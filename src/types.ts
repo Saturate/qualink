@@ -6,7 +6,8 @@ export type MetricType =
 	| "lighthouse"
 	| "coverage-js"
 	| "sarif"
-	| "coverage-dotnet";
+	| "coverage-dotnet"
+	| "meta";
 
 export interface BaseMetricDocument {
 	"@timestamp": string;
@@ -104,13 +105,18 @@ export interface DotnetCoverageMetricDocument extends CoverageMetricDocument {
 	coverage_format: "cobertura" | "opencover" | (string & {});
 }
 
+export interface MetaMetricDocument extends BaseMetricDocument {
+	metric_type: "meta";
+}
+
 export type NormalizedDocument =
 	| BiomeMetricDocument
 	| EslintMetricDocument
 	| LighthouseMetricDocument
 	| CoverageJsMetricDocument
 	| SarifMetricDocument
-	| DotnetCoverageMetricDocument;
+	| DotnetCoverageMetricDocument
+	| MetaMetricDocument;
 
 export interface CommonMetadata {
 	repo: string;

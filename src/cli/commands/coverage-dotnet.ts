@@ -1,6 +1,6 @@
 import { collectCoverageDotnet } from "../../collectors/coverage-dotnet.js";
 import { createCollectorCommand } from "../command-factory.js";
-import { loadTextInput } from "../shared.js";
+import { loadTextInput } from "../load-input.js";
 
 export const coverageDotnetCommand = createCollectorCommand({
 	name: "coverage-dotnet",

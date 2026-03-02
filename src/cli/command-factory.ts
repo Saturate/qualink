@@ -1,13 +1,9 @@
 import { defineCommand } from "citty";
 import type { CommonMetadata, MetricType, NormalizedDocument } from "../types.js";
-import {
-	CliError,
-	type CommonArgs,
-	commonArgs,
-	isDryRun,
-	parseCommonMetadata,
-	sendToSink,
-} from "./shared.js";
+import { CliError } from "./cli-error.js";
+import { type CommonArgs, commonArgs, isDryRun } from "./common-args.js";
+import { parseCommonMetadata } from "./parse-metadata.js";
+import { sendToSink } from "./send-to-sink.js";
 
 interface CollectorResult {
 	metricType: MetricType;

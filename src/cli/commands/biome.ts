@@ -1,6 +1,7 @@
 import { collectBiome } from "../../collectors/biome.js";
 import { createCollectorCommand } from "../command-factory.js";
-import { loadJsonInput, parseLanguages } from "../shared.js";
+import { loadJsonInput } from "../load-input.js";
+import { parseLanguages } from "../parse-languages.js";
 
 function parseIntWithMin(value: unknown, fallback: number, min: number): number {
 	if (typeof value === "number") {
