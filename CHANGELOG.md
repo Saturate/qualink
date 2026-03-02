@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Documentation
+
+- Update changelog [skip ci] by @github-actions[bot] ([9356c80](https://github.com/Saturate/qualink/commit/9356c80136ceeee00da764f83803bb9ff5016924))
+
+- Add GitHub sponsor funding link by @Saturate ([6979829](https://github.com/Saturate/qualink/commit/69798297c7270e4b03770e18487a2c0e58f469d5))
+
+
 ## [0.1.1] - 2026-03-02
 
 ### Bug Fixes
