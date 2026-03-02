@@ -172,6 +172,12 @@ describe("collectBiome", () => {
 		});
 		expect(doc?.rules_violated).toBeUndefined();
 	});
+
+	it("throws on non-record diagnostic entry", () => {
+		expect(() => collectBiome({ diagnostics: [42] }, makeMetadata(), defaultOptions)).toThrow(
+			"Invalid Biome diagnostic entry",
+		);
+	});
 });
 
 describe("detectBiomeLanguages", () => {

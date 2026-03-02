@@ -63,6 +63,54 @@ describe("collectSarif", () => {
 			"SARIF input must be an object",
 		);
 	});
+
+	it("counts note-level results", () => {
+		const input = {
+			runs: [{ tool: { driver: { name: "test" } }, results: [{ level: "note" }] }],
+		};
+		const [doc] = collectSarif(input, makeMetadata(), defaultOptions);
+		expect(doc?.notes).toBe(1);
+		expect(doc?.errors).toBe(0);
+		expect(doc?.warnings).toBe(0);
+	});
+
+	it("defaults missing level to note", () => {
+		const input = {
+			runs: [{ tool: { driver: { name: "test" } }, results: [{ ruleId: "R1" }] }],
+		};
+		const [doc] = collectSarif(input, makeMetadata(), defaultOptions);
+		expect(doc?.notes).toBe(1);
+	});
+
+	it("skips non-record runs", () => {
+		const input = { runs: [null, sarifFixture.runs[0]] };
+		const [doc] = collectSarif(input, makeMetadata(), defaultOptions);
+		expect(doc?.errors).toBe(1);
+	});
+
+	it("skips runs with non-array results", () => {
+		const input = {
+			runs: [{ tool: { driver: { name: "test" } }, results: "bad" }],
+		};
+		const [doc] = collectSarif(input, makeMetadata(), defaultOptions);
+		expect(doc?.errors).toBe(0);
+	});
+
+	it("skips non-record results", () => {
+		const input = {
+			runs: [{ tool: { driver: { name: "test" } }, results: [null, { level: "error" }] }],
+		};
+		const [doc] = collectSarif(input, makeMetadata(), defaultOptions);
+		expect(doc?.errors).toBe(1);
+	});
+
+	it("omits rules_violated when includeRules is false", () => {
+		const [doc] = collectSarif(sarifFixture, makeMetadata(), {
+			includeRules: false,
+			topRules: 0,
+		});
+		expect(doc?.rules_violated).toBeUndefined();
+	});
 });
 
 describe("detectLanguagesFromTool", () => {

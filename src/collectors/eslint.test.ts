@@ -74,6 +74,78 @@ describe("collectEslint", () => {
 		});
 		expect(doc?.languages).toEqual(["js"]);
 	});
+
+	it("populates all_files when includeAllFiles is true", () => {
+		const [doc] = collectEslint(eslintFixture, makeMetadata(), {
+			...defaultOptions,
+			includeAllFiles: true,
+		});
+		expect(doc?.all_files).toHaveLength(1);
+		expect(doc?.all_files?.[0]?.path).toBe("src/index.ts");
+	});
+
+	it("sorts files by total desc, then errors desc, then path asc", () => {
+		const fixture = [
+			{
+				filePath: "b.ts",
+				errorCount: 2,
+				warningCount: 1,
+				fixableErrorCount: 0,
+				fixableWarningCount: 0,
+				messages: [],
+			},
+			{
+				filePath: "a.ts",
+				errorCount: 1,
+				warningCount: 2,
+				fixableErrorCount: 0,
+				fixableWarningCount: 0,
+				messages: [],
+			},
+			{
+				filePath: "c.ts",
+				errorCount: 1,
+				warningCount: 2,
+				fixableErrorCount: 0,
+				fixableWarningCount: 0,
+				messages: [],
+			},
+		];
+		const [doc] = collectEslint(fixture, makeMetadata(), {
+			...defaultOptions,
+			includeAllFiles: true,
+		});
+		// All have total 3; b.ts has more errors so it's first; a.ts < c.ts alphabetically
+		expect(doc?.all_files?.map((f) => f.path)).toEqual(["b.ts", "a.ts", "c.ts"]);
+	});
+
+	it("skips messages with null ruleId in rule counts", () => {
+		const fixture = [
+			{
+				filePath: "x.ts",
+				errorCount: 2,
+				warningCount: 0,
+				fixableErrorCount: 0,
+				fixableWarningCount: 0,
+				messages: [{ ruleId: null }, { ruleId: "some-rule" }],
+			},
+		];
+		const [doc] = collectEslint(fixture, makeMetadata(), defaultOptions);
+		expect(doc?.rules_violated).toEqual({ "some-rule": 1 });
+	});
+
+	it("throws on non-record entry in results array", () => {
+		expect(() => collectEslint([42], makeMetadata(), defaultOptions)).toThrow(
+			"Invalid ESLint result entry",
+		);
+	});
+
+	it("throws on non-array messages", () => {
+		const fixture = [{ filePath: "x.ts", errorCount: 0, warningCount: 0, messages: "bad" }];
+		expect(() => collectEslint(fixture, makeMetadata(), defaultOptions)).toThrow(
+			"Invalid ESLint messages array",
+		);
+	});
 });
 
 describe("detectEslintLanguages", () => {

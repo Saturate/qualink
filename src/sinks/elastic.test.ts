@@ -170,6 +170,34 @@ describe("ElasticSink", () => {
 		);
 	});
 
+	it("dead-letters retryable items after max retries", async () => {
+		globalThis.fetch = vi.fn().mockResolvedValue(
+			mockFetchResponse(200, {
+				errors: true,
+				items: [{ index: { status: 429, error: { reason: "rate limited" } } }],
+			}),
+		);
+
+		const sink = makeSink({ retryMax: 1, retryBackoffMs: 0 });
+		await expect(sink.send({ metricType: "eslint", documents: [makeDoc()] })).rejects.toThrow(
+			/failed after .* attempts/,
+		);
+		// 1 initial + 1 retry = 2
+		expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+		expect(stderrSpy).toHaveBeenCalledWith(
+			expect.stringContaining("[qualink] Dead-letter payload:"),
+		);
+	});
+
+	it("handles empty items array in response", async () => {
+		globalThis.fetch = vi
+			.fn()
+			.mockResolvedValue(mockFetchResponse(200, { errors: true, items: [] }));
+
+		const sink = makeSink();
+		await sink.send({ metricType: "eslint", documents: [makeDoc()] });
+	});
+
 	it("logs non-retryable item errors to stderr", async () => {
 		globalThis.fetch = vi.fn().mockResolvedValue(
 			mockFetchResponse(200, {

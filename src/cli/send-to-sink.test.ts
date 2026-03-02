@@ -77,4 +77,29 @@ describe("sendToSink", () => {
 		const doc = makeDummyDoc();
 		await expect(sendToSink("meta", { sink: "elastic" }, [doc])).rejects.toThrow(/ELASTIC_URL/);
 	});
+
+	it("parses string retry-max into a number", async () => {
+		const doc = makeDummyDoc();
+		// This exercises parseNumberInput with a string value — should not throw
+		await sendToSink("meta", { sink: "stdout", "retry-max": "5", "retry-backoff-ms": "100" }, [
+			doc,
+		]);
+		expect(writeSpy).toHaveBeenCalled();
+	});
+
+	it("QUALINK_SINK env overrides default sink", async () => {
+		const saved = process.env.QUALINK_SINK;
+		process.env.QUALINK_SINK = "stdout";
+		try {
+			const doc = makeDummyDoc();
+			await sendToSink("meta", {}, [doc]);
+			expect(writeSpy).toHaveBeenCalled();
+		} finally {
+			if (saved === undefined) {
+				delete process.env.QUALINK_SINK;
+			} else {
+				process.env.QUALINK_SINK = saved;
+			}
+		}
+	});
 });

@@ -49,4 +49,11 @@ describe("collectLighthouse", () => {
 			"Lighthouse report missing categories",
 		);
 	});
+
+	it("returns 0 when score is not a number", () => {
+		const input = { categories: { performance: { score: "bad" }, seo: {} } };
+		const [doc] = collectLighthouse(input, makeMetadata(), "https://x.com");
+		expect(doc?.performance).toBe(0);
+		expect(doc?.seo).toBe(0);
+	});
 });

@@ -78,6 +78,23 @@ describe("collectCoverageJs", () => {
 			"Coverage JSON input must be an object",
 		);
 	});
+
+	it("handles summary with missing metric keys", () => {
+		const input = { total: { lines: { total: 10, covered: 5 } } };
+		const [doc] = collectCoverageJs(input, makeMetadata());
+		expect(doc?.lines_total).toBe(10);
+		expect(doc?.branches_total).toBe(0);
+		expect(doc?.functions_total).toBe(0);
+	});
+
+	it("skips non-record entries in coverage-final format", () => {
+		const input = {
+			"src/a.ts": { s: { "0": 1 }, b: {}, f: {} },
+			badEntry: "not an object",
+		};
+		const [doc] = collectCoverageJs(input, makeMetadata());
+		expect(doc?.lines_total).toBe(1);
+	});
 });
 
 describe("detectCoverageLanguages", () => {
