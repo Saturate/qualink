@@ -1,6 +1,6 @@
 {
   "name": "qualink",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Collect, normalize, and relay code quality metrics from CI",
   "license": "MIT",
   "type": "module",
@@ -18,7 +18,6 @@
     "node": ">=22"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "tsc -p tsconfig.json",
     "start": "node ./bin/qualink.js",
     "dev": "node --loader ts-node/esm src/cli/index.ts",
