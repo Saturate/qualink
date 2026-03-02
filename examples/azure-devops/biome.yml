@@ -3,13 +3,13 @@
 #    displayName: Install qualink
 
 # Option B: use npx per step (simpler for a single collector)
-#   Just prefix commands with: npx qualink@^0
+#   Just prefix commands with: npx qualink
 
 steps:
   - script: npx biome check src/ --reporter=json > biome-report.json
     displayName: Run Biome
 
-  - script: npx qualink@^0 collect biome --input biome-report.json
+  - script: npx qualink collect biome --input biome-report.json
     displayName: Report Biome metrics
     env:
       ELASTIC_URL: $(ELASTIC_URL)

@@ -6,7 +6,7 @@ Copy-paste snippets for each collector. Repo, branch, commit, pipeline ID, and p
 
 Each example shows two options:
 
-- **Single collector**: use `npx qualink@^0` per step, no install needed
+- **Single collector**: use `npx qualink` per step, no install needed
 - **Multiple collectors**: add `npm install -g qualink` once, then call `qualink` directly
 
 ## Azure DevOps

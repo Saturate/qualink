@@ -3,13 +3,13 @@
 #    displayName: Install qualink
 
 # Option B: use npx per step (simpler for a single collector)
-#   Just prefix commands with: npx qualink@^0
+#   Just prefix commands with: npx qualink
 
 steps:
   - script: npx lhci collect --url=https://staging.example.com
     displayName: Run Lighthouse
 
-  - script: npx qualink@^0 collect lighthouse --input .lighthouseci/lhr-*.json
+  - script: npx qualink collect lighthouse --input .lighthouseci/lhr-*.json
     displayName: Report Lighthouse metrics
     env:
       ELASTIC_URL: $(ELASTIC_URL)

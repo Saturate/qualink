@@ -3,13 +3,13 @@
 #    displayName: Install qualink
 
 # Option B: use npx per step (simpler for a single collector)
-#   Just prefix commands with: npx qualink@^0
+#   Just prefix commands with: npx qualink
 
 steps:
   - script: npx eslint src/ --format json --output-file eslint-report.json
     displayName: Run ESLint
 
-  - script: npx qualink@^0 collect eslint --input eslint-report.json --top-files 10
+  - script: npx qualink collect eslint --input eslint-report.json --top-files 10
     displayName: Report ESLint metrics
     env:
       ELASTIC_URL: $(ELASTIC_URL)

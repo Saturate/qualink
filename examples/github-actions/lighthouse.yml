@@ -2,12 +2,12 @@
 #  - run: npm install -g qualink
 
 # Option B: use npx per step (simpler for a single collector)
-#   Just prefix commands with: npx qualink@^0
+#   Just prefix commands with: npx qualink
 
 steps:
   - run: npx lhci collect --url=https://staging.example.com
 
-  - run: npx qualink@^0 collect lighthouse --input .lighthouseci/lhr-*.json
+  - run: npx qualink collect lighthouse --input .lighthouseci/lhr-*.json
     env:
       ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
       ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
