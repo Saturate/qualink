@@ -1,3 +1,10 @@
+# Option A: install once (better when running multiple collectors)
+#  - script: npm install -g qualink
+#    displayName: Install qualink
+
+# Option B: use npx per step (simpler for a single collector)
+#   Just prefix commands with: npx qualink@^0
+
 steps:
   - task: DotNetCoreCLI@2
     inputs:
@@ -6,7 +13,7 @@ steps:
         /p:ErrorLog=analyzers.sarif,version=2.1
     displayName: Build with SARIF output
 
-  - script: npx qualink collect sarif --input analyzers.sarif
+  - script: npx qualink@^0 collect sarif --input analyzers.sarif
     displayName: Report SARIF metrics
     env:
       ELASTIC_URL: $(ELASTIC_URL)

@@ -1,3 +1,10 @@
+# Option A: install once (better when running multiple collectors)
+#  - script: npm install -g qualink
+#    displayName: Install qualink
+
+# Option B: use npx per step (simpler for a single collector)
+#   Just prefix commands with: npx qualink@^0
+
 steps:
   - task: DotNetCoreCLI@2
     inputs:
@@ -5,7 +12,7 @@ steps:
       arguments: --collect:"XPlat Code Coverage"
     displayName: Run .NET tests with coverage
 
-  - script: npx qualink collect coverage-dotnet --input $(Agent.TempDirectory)/**/coverage.cobertura.xml
+  - script: npx qualink@^0 collect coverage-dotnet --input $(Agent.TempDirectory)/**/coverage.cobertura.xml
     displayName: Report .NET coverage
     env:
       ELASTIC_URL: $(ELASTIC_URL)

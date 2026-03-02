@@ -1,8 +1,15 @@
+# Option A: install once (better when running multiple collectors)
+#  - script: npm install -g qualink
+#    displayName: Install qualink
+
+# Option B: use npx per step (simpler for a single collector)
+#   Just prefix commands with: npx qualink@^0
+
 steps:
   - script: npx vitest run --coverage.enabled --coverage.reporter=json-summary
     displayName: Run tests with coverage
 
-  - script: npx qualink collect coverage-js --input coverage/coverage-summary.json
+  - script: npx qualink@^0 collect coverage-js --input coverage/coverage-summary.json
     displayName: Report JS coverage
     env:
       ELASTIC_URL: $(ELASTIC_URL)

@@ -1,7 +1,13 @@
+# Option A: install once (better when running multiple collectors)
+#  - run: npm install -g qualink
+
+# Option B: use npx per step (simpler for a single collector)
+#   Just prefix commands with: npx qualink@^0
+
 steps:
   - run: dotnet build /p:ErrorLog=analyzers.sarif,version=2.1
 
-  - run: npx qualink collect sarif --input analyzers.sarif
+  - run: npx qualink@^0 collect sarif --input analyzers.sarif
     env:
       ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
       ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}

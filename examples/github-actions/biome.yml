@@ -1,7 +1,13 @@
+# Option A: install once (better when running multiple collectors)
+#  - run: npm install -g qualink
+
+# Option B: use npx per step (simpler for a single collector)
+#   Just prefix commands with: npx qualink@^0
+
 steps:
   - run: npx biome check src/ --reporter=json > biome-report.json
 
-  - run: npx qualink collect biome --input biome-report.json
+  - run: npx qualink@^0 collect biome --input biome-report.json
     env:
       ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
       ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
