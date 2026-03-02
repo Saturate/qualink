@@ -23,7 +23,8 @@
     "dev": "node --loader ts-node/esm src/cli/index.ts",
     "lint": "biome check src/",
     "test": "vitest run",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "changelog": "git-cliff -o CHANGELOG.md"
   },
   "dependencies": {
     "citty": "^0.1.6",
@@ -32,9 +33,18 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",
     "@types/node": "^24.0.0",
+    "git-cliff": "^2.12.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "vitest": "^4.0.18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Saturate/qualink.git"
+  },
+  "homepage": "https://github.com/Saturate/qualink",
+  "bugs": {
+    "url": "https://github.com/Saturate/qualink/issues"
   },
   "keywords": [
     "ci",
