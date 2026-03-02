@@ -82,6 +82,6 @@ Useful env fallbacks:
 - `QUALINK_REPO`, `QUALINK_CATEGORY`, `QUALINK_TAGS`, `QUALINK_BRANCH`, `QUALINK_COMMIT_SHA`, `QUALINK_PIPELINE_RUN_ID`
 - `QUALINK_PACKAGE` (monorepo package name, auto-detected from `PNPM_PACKAGE_NAME`)
 - `QUALINK_PROJECT` (backend project identity)
-- `QUALINK_PIPELINE_PROVIDER` (default: `azure-devops`)
+- `QUALINK_PIPELINE_PROVIDER` (auto-detected, fallback: `local`)
 - `QUALINK_ENVIRONMENT` (default: `ci`)
 - `QUALINK_SINK` (default: `elastic`)

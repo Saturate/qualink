@@ -10,6 +10,7 @@
   "files": [
     "bin",
     "dist",
+    "LICENSE",
     "README.md"
   ],
   "packageManager": "pnpm@10.29.2",
