@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 - Web vitals, filmstrip, and Kibana dashboard (#8) by @Saturate in [#8](https://github.com/Saturate/qualink/pull/8) ([1ac3710](https://github.com/Saturate/qualink/commit/1ac37107e09f967353fbb3115b747ee845a096a8))
 
 
+### Miscellaneous
+
+- Bump version to 0.3.0 by @Saturate ([3d2be6b](https://github.com/Saturate/qualink/commit/3d2be6b2fe05dd1e2d09e97923726cc39a588553))
+
+
 ## [0.2.0] - 2026-03-03
 
 ### Features
