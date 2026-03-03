@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- Track suppressed messages (#6) by @Saturate in [#6](https://github.com/Saturate/qualink/pull/6) ([e17ff8e](https://github.com/Saturate/qualink/commit/e17ff8e95fd46c0a53b0a1a015cfb0f816512f2d))
+
+
+## [0.2.0] - 2026-03-03
+
+### Features
+
 - Add Loki sink for Grafana + Loki stack by @Saturate ([a3a9830](https://github.com/Saturate/qualink/commit/a3a9830d5b12019a00779a10183781acf92e3ab5))
 
 
