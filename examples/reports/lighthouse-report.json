@@ -93,6 +93,19 @@
           { "node": { "selector": ".footer-link", "snippet": "<a class=\"footer-link\">" } }
         ]
       }
+    },
+    "screenshot-thumbnails": {
+      "id": "screenshot-thumbnails",
+      "title": "Screenshot Thumbnails",
+      "score": null,
+      "details": {
+        "type": "filmstrip",
+        "items": [
+          { "timing": 300, "timestamp": 1709110200300, "data": "data:image/jpeg;base64,/9j/4AAQSkZJRg==" },
+          { "timing": 600, "timestamp": 1709110200600, "data": "data:image/jpeg;base64,/9j/4AAQSkZJRh==" },
+          { "timing": 900, "timestamp": 1709110200900, "data": "data:image/jpeg;base64,/9j/4AAQSkZJRi==" }
+        ]
+      }
     }
   },
   "environment": {

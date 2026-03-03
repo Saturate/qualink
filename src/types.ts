@@ -49,13 +49,33 @@ export interface EslintFileIssue {
 	fixable_warnings: number;
 }
 
+export interface LighthouseFilmstripFrame {
+	timing: number; // ms from navigation start
+	data: string; // base64 data URI
+}
+
 export interface LighthouseMetricDocument extends BaseMetricDocument {
 	metric_type: "lighthouse";
 	url: string;
+	// Category scores
 	performance: number;
 	accessibility: number;
 	best_practices: number;
 	seo: number;
+	// Core Web Vitals (ms unless noted)
+	fcp?: number;
+	lcp?: number;
+	tbt?: number;
+	cls?: number; // unitless
+	si?: number;
+	tti?: number;
+	ttfb?: number;
+	total_byte_weight?: number; // bytes
+	dom_size?: number; // element count
+	// All audits
+	audit_scores?: Record<string, number>; // id → 0-100
+	audit_values?: Record<string, number>; // id → raw numericValue
+	filmstrip?: LighthouseFilmstripFrame[];
 }
 
 export interface CoverageMetricDocument extends BaseMetricDocument {

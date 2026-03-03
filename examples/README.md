@@ -43,6 +43,10 @@ The monorepo examples show how to use `pnpm -r exec` to collect metrics from eve
 
 You can also set `QUALINK_PACKAGE` explicitly if you're not using pnpm.
 
+## Kibana dashboard
+
+The [kibana/](kibana/) folder contains an importable dashboard for visualizing collected metrics over time. Import the NDJSON file via **Stack Management > Saved Objects > Import**.
+
 ## Sample reports
 
 The [reports/](reports/) folder contains sample input files for each collector.
