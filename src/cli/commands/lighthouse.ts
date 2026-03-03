@@ -8,6 +8,7 @@ export const lighthouseCommand = createCollectorCommand({
 	description: "Collect Lighthouse metrics and relay them",
 	extraArgs: {
 		url: { type: "string" as const, required: true as const },
+		"include-filmstrip": { type: "boolean" as const, default: false },
 	},
 	async collect(args, metadata) {
 		const url = args.url;
@@ -15,7 +16,9 @@ export const lighthouseCommand = createCollectorCommand({
 			throw new CliError("Missing required value: url", 2);
 		}
 		const input = await loadJsonInput(args);
-		const documents = collectLighthouse(input, metadata, url);
+		const documents = collectLighthouse(input, metadata, url, {
+			includeFilmstrip: args["include-filmstrip"] === true,
+		});
 		return { metricType: "lighthouse", documents };
 	},
 });
