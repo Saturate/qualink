@@ -39,9 +39,7 @@ export interface LighthouseCollectorOptions {
 	includeFilmstrip: boolean;
 }
 
-function extractFilmstrip(
-	audits: Record<string, unknown>,
-): LighthouseFilmstripFrame[] | undefined {
+function extractFilmstrip(audits: Record<string, unknown>): LighthouseFilmstripFrame[] | undefined {
 	const thumbnail = audits["screenshot-thumbnails"];
 	if (!isRecord(thumbnail)) return undefined;
 
