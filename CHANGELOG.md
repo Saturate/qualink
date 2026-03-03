@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 
 - Pass app token to git-cliff for GitHub API access (#4) by @Saturate in [#4](https://github.com/Saturate/qualink/pull/4) ([2e66f3f](https://github.com/Saturate/qualink/commit/2e66f3ff70f138b2689fb838186c56d62ad6fa44))
 
+- Add workflow_dispatch trigger to release workflow (#5) by @Saturate in [#5](https://github.com/Saturate/qualink/pull/5) ([4ff6667](https://github.com/Saturate/qualink/commit/4ff6667141dc2ab336a1f0d29b2c839796141a23))
+
 
 ### Documentation
 
