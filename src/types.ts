@@ -33,7 +33,10 @@ export interface EslintMetricDocument extends BaseMetricDocument {
 	warnings: number;
 	fixable_errors: number;
 	fixable_warnings: number;
+	suppressed_errors: number;
+	suppressed_warnings: number;
 	rules_violated?: Record<string, number>;
+	suppressed_rules?: Record<string, number>;
 	top_files?: EslintFileIssue[];
 	all_files?: EslintFileIssue[];
 }

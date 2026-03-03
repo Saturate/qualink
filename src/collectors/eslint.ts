@@ -4,6 +4,7 @@ import { isRecord } from "../utils/guards.js";
 
 interface EslintMessage {
 	ruleId: string | null;
+	severity?: number | undefined;
 }
 
 interface EslintFileResult {
@@ -13,6 +14,7 @@ interface EslintFileResult {
 	fixableErrorCount: number;
 	fixableWarningCount: number;
 	messages: EslintMessage[];
+	suppressedMessages: EslintMessage[];
 }
 
 function asEslintResults(input: unknown): EslintFileResult[] {
@@ -30,18 +32,23 @@ function asEslintResults(input: unknown): EslintFileResult[] {
 			throw new Error("Invalid ESLint messages array");
 		}
 
-		const messages: EslintMessage[] = messagesRaw.map((message) => {
-			if (!isRecord(message)) {
-				return { ruleId: null };
-			}
+		const parseMessages = (raw: unknown[]): EslintMessage[] =>
+			raw.map((message) => {
+				if (!isRecord(message)) {
+					return { ruleId: null };
+				}
+				const ruleValue = message.ruleId;
+				const severity = typeof message.severity === "number" ? message.severity : undefined;
+				if (typeof ruleValue !== "string" && ruleValue !== null) {
+					return { ruleId: null, severity };
+				}
+				return { ruleId: ruleValue, severity };
+			});
 
-			const ruleValue = message.ruleId;
-			if (typeof ruleValue !== "string" && ruleValue !== null) {
-				return { ruleId: null };
-			}
+		const messages = parseMessages(messagesRaw);
 
-			return { ruleId: ruleValue };
-		});
+		const suppressedRaw = entry.suppressedMessages;
+		const suppressedMessages = Array.isArray(suppressedRaw) ? parseMessages(suppressedRaw) : [];
 
 		return {
 			filePath: typeof entry.filePath === "string" ? entry.filePath : "unknown",
@@ -51,6 +58,7 @@ function asEslintResults(input: unknown): EslintFileResult[] {
 			fixableWarningCount:
 				typeof entry.fixableWarningCount === "number" ? entry.fixableWarningCount : 0,
 			messages,
+			suppressedMessages,
 		};
 	});
 }
@@ -98,8 +106,11 @@ export function collectEslint(
 	let warnings = 0;
 	let fixableErrors = 0;
 	let fixableWarnings = 0;
+	let suppressedErrors = 0;
+	let suppressedWarnings = 0;
 
 	const rules = new Map<string, number>();
+	const suppressedRules = new Map<string, number>();
 	const files: EslintFileIssue[] = [];
 
 	for (const row of rows) {
@@ -122,9 +133,22 @@ export function collectEslint(
 			if (!message.ruleId) {
 				continue;
 			}
-
 			const existing = rules.get(message.ruleId) ?? 0;
 			rules.set(message.ruleId, existing + 1);
+		}
+
+		for (const message of row.suppressedMessages) {
+			// severity: 2 = error, 1 = warning
+			if (message.severity === 2) {
+				suppressedErrors++;
+			} else {
+				suppressedWarnings++;
+			}
+			if (!message.ruleId) {
+				continue;
+			}
+			const existing = suppressedRules.get(message.ruleId) ?? 0;
+			suppressedRules.set(message.ruleId, existing + 1);
 		}
 	}
 
@@ -141,13 +165,21 @@ export function collectEslint(
 		warnings,
 		fixable_errors: fixableErrors,
 		fixable_warnings: fixableWarnings,
+		suppressed_errors: suppressedErrors,
+		suppressed_warnings: suppressedWarnings,
 	};
 
 	if (options.includeRules) {
 		const sortedRules = [...rules.entries()].sort((a, b) => b[1] - a[1]);
 		const slice = options.topRules > 0 ? sortedRules.slice(0, options.topRules) : sortedRules;
-
 		doc.rules_violated = Object.fromEntries(slice);
+
+		if (suppressedRules.size > 0) {
+			const sortedSuppressed = [...suppressedRules.entries()].sort((a, b) => b[1] - a[1]);
+			const suppressedSlice =
+				options.topRules > 0 ? sortedSuppressed.slice(0, options.topRules) : sortedSuppressed;
+			doc.suppressed_rules = Object.fromEntries(suppressedSlice);
+		}
 	}
 
 	if (files.length > 0 && (options.topFiles > 0 || options.includeAllFiles)) {
