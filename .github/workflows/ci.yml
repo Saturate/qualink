@@ -55,6 +55,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run changelog
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Commit changelog
         run: |
