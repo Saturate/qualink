@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Track suppressed messages (#6) by @Saturate in [#6](https://github.com/Saturate/qualink/pull/6) ([e17ff8e](https://github.com/Saturate/qualink/commit/e17ff8e95fd46c0a53b0a1a015cfb0f816512f2d))
 
+- Web vitals, filmstrip, and Kibana dashboard (#8) by @Saturate in [#8](https://github.com/Saturate/qualink/pull/8) ([1ac3710](https://github.com/Saturate/qualink/commit/1ac37107e09f967353fbb3115b747ee845a096a8))
+
 
 ## [0.2.0] - 2026-03-03
 
