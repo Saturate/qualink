@@ -7,7 +7,8 @@ export type MetricType =
 	| "coverage-js"
 	| "sarif"
 	| "coverage-dotnet"
-	| "meta";
+	| "meta"
+	| "pipeline";
 
 export interface BaseMetricDocument {
 	"@timestamp": string;
@@ -132,6 +133,16 @@ export interface MetaMetricDocument extends BaseMetricDocument {
 	metric_type: "meta";
 }
 
+export interface PipelineMetricDocument extends BaseMetricDocument {
+	metric_type: "pipeline";
+	pipeline_name: string;
+	pipeline_status: "succeeded" | "failed" | "canceled" | "unknown";
+	pipeline_trigger: string;
+	duration_ms: number | null;
+	start_time: string | null;
+	stage_name: string | null;
+}
+
 export type NormalizedDocument =
 	| BiomeMetricDocument
 	| EslintMetricDocument
@@ -139,7 +150,8 @@ export type NormalizedDocument =
 	| CoverageJsMetricDocument
 	| SarifMetricDocument
 	| DotnetCoverageMetricDocument
-	| MetaMetricDocument;
+	| MetaMetricDocument
+	| PipelineMetricDocument;
 
 export interface CommonMetadata {
 	repo: string;

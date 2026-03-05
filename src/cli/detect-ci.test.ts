@@ -2,8 +2,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
 	detectBranch,
 	detectCommitSha,
+	detectPipelineName,
 	detectPipelineProvider,
 	detectPipelineRunId,
+	detectPipelineTrigger,
 } from "./detect-ci.js";
 
 const CI_ENV_PREFIXES = ["QUALINK_", "BUILD_", "GITHUB_", "CI_", "TF_BUILD", "CI"];
@@ -138,5 +140,106 @@ describe("detectPipelineProvider", () => {
 
 	it("nothing → local", () => {
 		expect(detectPipelineProvider({})).toBe("local");
+	});
+});
+
+describe("detectPipelineName", () => {
+	it("CLI arg wins", () => {
+		process.env.BUILD_DEFINITIONNAME = "from-ci";
+		expect(detectPipelineName({ "pipeline-name": "from-arg" })).toBe("from-arg");
+	});
+
+	it("QUALINK_PIPELINE_NAME beats CI env", () => {
+		process.env.QUALINK_PIPELINE_NAME = "from-qualink";
+		process.env.BUILD_DEFINITIONNAME = "from-ci";
+		expect(detectPipelineName({})).toBe("from-qualink");
+	});
+
+	it("BUILD_DEFINITIONNAME (Azure DevOps)", () => {
+		process.env.BUILD_DEFINITIONNAME = "Build and Deploy";
+		expect(detectPipelineName({})).toBe("Build and Deploy");
+	});
+
+	it("GITHUB_WORKFLOW (GitHub Actions)", () => {
+		process.env.GITHUB_WORKFLOW = "CI";
+		expect(detectPipelineName({})).toBe("CI");
+	});
+
+	it("CI_PIPELINE_NAME (GitLab)", () => {
+		process.env.CI_PIPELINE_NAME = "pipeline-1";
+		expect(detectPipelineName({})).toBe("pipeline-1");
+	});
+
+	it("CI_PROJECT_NAME fallback (GitLab)", () => {
+		process.env.CI_PROJECT_NAME = "my-project";
+		expect(detectPipelineName({})).toBe("my-project");
+	});
+
+	it("falls back to unknown", () => {
+		expect(detectPipelineName({})).toBe("unknown");
+	});
+});
+
+describe("detectPipelineTrigger", () => {
+	it("CLI arg wins", () => {
+		process.env.BUILD_REASON = "IndividualCI";
+		expect(detectPipelineTrigger({ trigger: "manual" })).toBe("manual");
+	});
+
+	it("QUALINK_PIPELINE_TRIGGER beats CI env", () => {
+		process.env.QUALINK_PIPELINE_TRIGGER = "from-qualink";
+		process.env.BUILD_REASON = "IndividualCI";
+		expect(detectPipelineTrigger({})).toBe("from-qualink");
+	});
+
+	it("Azure DevOps BUILD_REASON mapping", () => {
+		process.env.BUILD_REASON = "IndividualCI";
+		expect(detectPipelineTrigger({})).toBe("push");
+
+		process.env.BUILD_REASON = "PullRequest";
+		expect(detectPipelineTrigger({})).toBe("pr");
+
+		process.env.BUILD_REASON = "Manual";
+		expect(detectPipelineTrigger({})).toBe("manual");
+
+		process.env.BUILD_REASON = "Schedule";
+		expect(detectPipelineTrigger({})).toBe("schedule");
+	});
+
+	it("GitHub Actions GITHUB_EVENT_NAME mapping", () => {
+		process.env.GITHUB_EVENT_NAME = "push";
+		expect(detectPipelineTrigger({})).toBe("push");
+
+		process.env.GITHUB_EVENT_NAME = "pull_request";
+		expect(detectPipelineTrigger({})).toBe("pr");
+
+		process.env.GITHUB_EVENT_NAME = "workflow_dispatch";
+		expect(detectPipelineTrigger({})).toBe("manual");
+
+		process.env.GITHUB_EVENT_NAME = "schedule";
+		expect(detectPipelineTrigger({})).toBe("schedule");
+	});
+
+	it("GitLab CI_PIPELINE_SOURCE mapping", () => {
+		process.env.CI_PIPELINE_SOURCE = "push";
+		expect(detectPipelineTrigger({})).toBe("push");
+
+		process.env.CI_PIPELINE_SOURCE = "merge_request_event";
+		expect(detectPipelineTrigger({})).toBe("pr");
+
+		process.env.CI_PIPELINE_SOURCE = "web";
+		expect(detectPipelineTrigger({})).toBe("manual");
+
+		process.env.CI_PIPELINE_SOURCE = "api";
+		expect(detectPipelineTrigger({})).toBe("api");
+	});
+
+	it("unknown CI values pass through", () => {
+		process.env.BUILD_REASON = "SomeNewReason";
+		expect(detectPipelineTrigger({})).toBe("SomeNewReason");
+	});
+
+	it("falls back to unknown", () => {
+		expect(detectPipelineTrigger({})).toBe("unknown");
 	});
 });

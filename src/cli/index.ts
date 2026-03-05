@@ -7,6 +7,7 @@ import {
 	eslintCommand,
 	lighthouseCommand,
 	metaCommand,
+	pipelineCommand,
 	sarifCommand,
 } from "./commands/index.js";
 
@@ -34,6 +35,7 @@ const main = defineCommand({
 	subCommands: {
 		collect: collectCommand,
 		meta: metaCommand,
+		pipeline: pipelineCommand,
 	},
 });
 

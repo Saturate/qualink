@@ -26,6 +26,79 @@ Repo, branch, commit SHA, pipeline run ID, and provider are auto-detected from C
 
 See the [examples/](examples/) folder for copy-paste snippets for Azure DevOps and GitHub Actions.
 
+## Pipeline Tracking
+
+Track pipeline execution metrics — which pipelines run, when, for how long, and their outcome.
+Pipelines self-report by calling `qualink pipeline --status <status>` at the end of a run.
+
+### Azure DevOps
+
+```yaml
+steps:
+  - script: echo "##vso[task.setvariable variable=PIPELINE_START]$(date +%s%3N)"
+    displayName: Record start time
+
+  # ... existing build/test steps ...
+
+  - script: |
+      END_TIME=$(date +%s%3N)
+      DURATION=$(( END_TIME - $(PIPELINE_START) ))
+      npx qualink pipeline \
+        --status "$(Agent.JobStatus)" \
+        --duration "$DURATION" \
+        --sink elastic
+    displayName: Report pipeline metrics
+    condition: always()
+    env:
+      ELASTIC_URL: $(ELASTIC_URL)
+      ELASTIC_API_KEY: $(ELASTIC_API_KEY)
+```
+
+Auto-detected from Azure DevOps env: pipeline name (`BUILD_DEFINITIONNAME`), trigger (`BUILD_REASON`), repo, branch, commit, run ID, provider.
+
+### GitHub Actions
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record start time
+        run: echo "PIPELINE_START=$(date +%s%3N)" >> "$GITHUB_ENV"
+
+      # ... existing build/test steps ...
+
+      - name: Report pipeline metrics
+        if: always()
+        run: |
+          END_TIME=$(date +%s%3N)
+          DURATION=$(( END_TIME - PIPELINE_START ))
+          npx qualink pipeline \
+            --status "${{ job.status }}" \
+            --duration "$DURATION" \
+            --sink elastic
+        env:
+          ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
+          ELASTIC_API_KEY: ${{ secrets.ELASTIC_API_KEY }}
+```
+
+Auto-detected from GitHub env: pipeline name (`GITHUB_WORKFLOW`), trigger (`GITHUB_EVENT_NAME`), repo, branch, commit, run ID, provider.
+
+### Per-stage reporting
+
+For pipelines with distinct stages, call qualink once per stage with `--stage-name`:
+
+```yaml
+# Azure DevOps example
+- script: |
+    npx qualink pipeline --status "$(Agent.JobStatus)" --stage-name build --duration "$BUILD_DURATION"
+  condition: always()
+
+- script: |
+    npx qualink pipeline --status "$(Agent.JobStatus)" --stage-name deploy --duration "$DEPLOY_DURATION"
+  condition: always()
+```
+
 ## CLI usage
 
 ```bash
@@ -38,6 +111,12 @@ Examples:
 qualink collect eslint --input eslint-report.json --sink elastic --repo frontend-mono --category frontend --tags frontend,web --branch main --commit-sha abc123 --pipeline-run-id 987
 qualink collect sarif --input analyzers.sarif --sink elastic --repo backend-api --category backend --tags backend,api --branch main --commit-sha def456 --pipeline-run-id 654
 qualink collect coverage-dotnet --input coverage.cobertura.xml --sink elastic --repo backend-api --category backend --tags backend,api --branch main --commit-sha def456 --pipeline-run-id 654
+
+# Pipeline tracking (top-level command, not under collect)
+qualink pipeline --status succeeded --sink elastic
+qualink pipeline --status succeeded --duration 125000 --pipeline-name "Build and Deploy"
+qualink pipeline --status succeeded --stage-name build --duration 45000
+qualink pipeline --status failed --dry-run
 ```
 
 Collectors:
