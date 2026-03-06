@@ -33,6 +33,64 @@ export function detectPipelineRunId(args: CommonArgs): string {
 	);
 }
 
+export function detectPipelineName(args: CommonArgs): string {
+	return (
+		envOrArg(argValue(args, "pipelineName", "pipeline-name"), "QUALINK_PIPELINE_NAME") ??
+		process.env.BUILD_DEFINITIONNAME ??
+		process.env.GITHUB_WORKFLOW ??
+		process.env.CI_PIPELINE_NAME ??
+		process.env.CI_PROJECT_NAME ??
+		"unknown"
+	);
+}
+
+const AZURE_TRIGGER_MAP: Record<string, string> = {
+	IndividualCI: "push",
+	BatchedCI: "push",
+	PullRequest: "pr",
+	Manual: "manual",
+	Schedule: "schedule",
+};
+
+const GITHUB_TRIGGER_MAP: Record<string, string> = {
+	push: "push",
+	pull_request: "pr",
+	workflow_dispatch: "manual",
+	schedule: "schedule",
+};
+
+const GITLAB_TRIGGER_MAP: Record<string, string> = {
+	push: "push",
+	merge_request_event: "pr",
+	web: "manual",
+	schedule: "schedule",
+	api: "api",
+};
+
+export function detectPipelineTrigger(args: CommonArgs): string {
+	const explicit = envOrArg(argValue(args, "trigger"), "QUALINK_PIPELINE_TRIGGER");
+	if (explicit) {
+		return explicit;
+	}
+
+	const azureReason = process.env.BUILD_REASON;
+	if (azureReason) {
+		return AZURE_TRIGGER_MAP[azureReason] ?? azureReason;
+	}
+
+	const githubEvent = process.env.GITHUB_EVENT_NAME;
+	if (githubEvent) {
+		return GITHUB_TRIGGER_MAP[githubEvent] ?? githubEvent;
+	}
+
+	const gitlabSource = process.env.CI_PIPELINE_SOURCE;
+	if (gitlabSource) {
+		return GITLAB_TRIGGER_MAP[gitlabSource] ?? gitlabSource;
+	}
+
+	return "unknown";
+}
+
 export function detectPipelineProvider(args: CommonArgs): string {
 	const explicit = envOrArg(
 		argValue(args, "pipelineProvider", "pipeline-provider"),
