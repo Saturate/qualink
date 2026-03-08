@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Add pipeline usage collector (#9) by @Saturate in [#9](https://github.com/Saturate/qualink/pull/9) ([969decc](https://github.com/Saturate/qualink/commit/969decc570185fe75722d72e0b746923157292e5))
 
+- Unify package/project, add solution and multi-collect (#11) by @Saturate in [#11](https://github.com/Saturate/qualink/pull/11) ([5be3beb](https://github.com/Saturate/qualink/commit/5be3bebf1db7d3b348e2a452a88086a7fbbba106))
+
 
 ### Miscellaneous
 
