@@ -37,11 +37,11 @@ Each example shows two options:
 
 ## Monorepos
 
-For pnpm workspaces, qualink auto-detects the package name from `PNPM_PACKAGE_NAME` (set by `pnpm -r exec`). This gives you repo-level health at a glance, with drill-down into individual packages/apps.
+For pnpm workspaces, qualink auto-detects the project name from `PNPM_PACKAGE_NAME` (set by `pnpm -r exec`). This gives you repo-level health at a glance, with drill-down into individual projects/apps.
 
 The monorepo examples show how to use `pnpm -r exec` to collect metrics from every workspace, or use `--filter` to scope to apps only.
 
-You can also set `QUALINK_PACKAGE` explicitly if you're not using pnpm.
+You can also set `QUALINK_PROJECT` explicitly if you're not using pnpm.
 
 ## Kibana dashboard
 

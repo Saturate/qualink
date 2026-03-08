@@ -13,7 +13,7 @@ describe("baseDocument", () => {
 			pipelineRunId: "run-42",
 			pipelineProvider: "github-actions",
 			environment: "prod",
-			packageName: "@scope/pkg",
+			solution: "my-solution",
 			projectName: "my-project",
 			collectorVersion: "1.0.0",
 		});
@@ -36,7 +36,7 @@ describe("baseDocument", () => {
 		expect(doc.pipeline_run_id).toBe("run-42");
 		expect(doc.pipeline_provider).toBe("github-actions");
 		expect(doc.environment).toBe("prod");
-		expect(doc.package).toBe("@scope/pkg");
+		expect(doc.solution).toBe("my-solution");
 		expect(doc.project).toBe("my-project");
 		expect(doc.collector_version).toBe("1.0.0");
 	});
@@ -58,10 +58,10 @@ describe("baseDocument", () => {
 			metricType: "eslint",
 			tool: "eslint",
 			languages: ["js"],
-			metadata: makeMetadata({ packageName: null, projectName: null, category: null }),
+			metadata: makeMetadata({ solution: null, projectName: null, category: null }),
 		});
 
-		expect(doc.package).toBe(null);
+		expect(doc.solution).toBe(null);
 		expect(doc.project).toBe(null);
 		expect(doc.category).toBe(null);
 	});

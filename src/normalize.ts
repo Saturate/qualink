@@ -18,7 +18,7 @@ export function baseDocument<TMetricType extends MetricType>(
 		tool: input.tool,
 		languages: input.languages,
 		repo: metadata.repo,
-		package: metadata.packageName,
+		solution: metadata.solution,
 		project: metadata.projectName,
 		category: metadata.category,
 		tags: metadata.tags,

@@ -1,55 +1,14 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { cleanEnv, createTempGitRepo, writeFile, writeJson } from "../test-helpers.js";
+import { DEFAULT_COLLECTOR_VERSION } from "./parse-metadata.js";
 
 // ── helpers ──────────────────────────────────────────────────────────
 
 const CLI_PATH = resolve(fileURLToPath(import.meta.url), "../../../dist/cli/index.js");
-
-const CI_ENV_KEYS = ["QUALINK_", "BUILD_", "GITHUB_", "CI_", "TF_BUILD", "PNPM_PACKAGE_NAME", "CI"];
-
-/** Return a clean copy of process.env with all CI-related vars stripped. */
-function cleanEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
-	const env = { ...process.env };
-	for (const key of Object.keys(env)) {
-		if (CI_ENV_KEYS.some((p) => key.startsWith(p) || key === p)) {
-			delete env[key];
-		}
-	}
-	return { ...env, ...extra };
-}
-
-function createTempGitRepo(name: string, remoteUrl?: string): string {
-	const dir = mkdtempSync(join(tmpdir(), `qualink-e2e-${name}-`));
-	const git = (args: string[]) => execFileSync("git", args, { cwd: dir, stdio: "ignore" });
-
-	git(["init"]);
-	git(["config", "user.email", "test@test.com"]);
-	git(["config", "user.name", "Test"]);
-	git(["checkout", "-b", "main"]);
-	git(["commit", "--allow-empty", "-m", "init"]);
-
-	if (remoteUrl) {
-		git(["remote", "add", "origin", remoteUrl]);
-	}
-
-	return dir;
-}
-
-function writeJson(dir: string, relativePath: string, data: unknown): void {
-	const full = join(dir, relativePath);
-	mkdirSync(join(full, ".."), { recursive: true });
-	writeFileSync(full, JSON.stringify(data));
-}
-
-function writeFile(dir: string, relativePath: string, content = ""): void {
-	const full = join(dir, relativePath);
-	mkdirSync(join(full, ".."), { recursive: true });
-	writeFileSync(full, content);
-}
 
 interface CliOutput {
 	payload: {
@@ -96,6 +55,11 @@ describe(".NET solution", () => {
 		expect(doc.project).toBeNull();
 	});
 
+	it("detects solution from .sln", () => {
+		const { payload } = runMeta([], { cwd: join(root, "src/MyApp.Api") });
+		expect(payload.documents[0].solution).toBe("MyApp");
+	});
+
 	it("detects project from .csproj when run from subdir", () => {
 		const { payload } = runMeta([], { cwd: join(root, "src/MyApp.Api") });
 		const doc = payload.documents[0];
@@ -127,14 +91,24 @@ describe("pnpm monorepo", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
-	it("detects package from package.json in subdir", () => {
+	it("detects project from package.json in subdir", () => {
 		const { payload } = runMeta([], { cwd: join(root, "packages/ui") });
-		expect(payload.documents[0].package).toBe("@myorg/ui");
+		expect(payload.documents[0].project).toBe("@myorg/ui");
 	});
 
-	it("no package at repo root", () => {
+	it("detects solution from workspace root", () => {
+		const { payload } = runMeta([], { cwd: join(root, "packages/ui") });
+		expect(payload.documents[0].solution).toBe("my-pnpm-mono");
+	});
+
+	it("no project at repo root", () => {
 		const { payload } = runMeta([], { cwd: root });
-		expect(payload.documents[0].package).toBeNull();
+		expect(payload.documents[0].project).toBeNull();
+	});
+
+	it("no solution at repo root", () => {
+		const { payload } = runMeta([], { cwd: root });
+		expect(payload.documents[0].solution).toBeNull();
 	});
 
 	it("repo parsed from SSH remote", () => {
@@ -217,15 +191,33 @@ describe("CLI arg / env overrides", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
-	it("--repo, --branch, --project override detection", () => {
+	it("--repo, --branch, --project, --solution override detection", () => {
 		const { payload } = runMeta(
-			["--repo", "cli-repo", "--branch", "cli-branch", "--project", "cli-proj"],
+			[
+				"--repo",
+				"cli-repo",
+				"--branch",
+				"cli-branch",
+				"--project",
+				"cli-proj",
+				"--solution",
+				"cli-sln",
+			],
 			{ cwd: root },
 		);
 		const doc = payload.documents[0];
 		expect(doc.repo).toBe("cli-repo");
 		expect(doc.branch).toBe("cli-branch");
 		expect(doc.project).toBe("cli-proj");
+		expect(doc.solution).toBe("cli-sln");
+	});
+
+	it("QUALINK_SOLUTION env var overrides detection", () => {
+		const { payload } = runMeta([], {
+			cwd: root,
+			env: { QUALINK_SOLUTION: "env-sln" },
+		});
+		expect(payload.documents[0].solution).toBe("env-sln");
 	});
 
 	it("QUALINK_* env vars override CI env", () => {
@@ -270,7 +262,7 @@ describe("output modes", () => {
 		expect(doc.tool).toBe("qualink");
 		expect(doc.languages).toEqual([]);
 		expect(doc.environment).toBe("ci");
-		expect(doc.collector_version).toBe("0.1.0");
+		expect(doc.collector_version).toBe(DEFAULT_COLLECTOR_VERSION);
 	});
 
 	it("--dry-run → dry-run JSON shape", () => {

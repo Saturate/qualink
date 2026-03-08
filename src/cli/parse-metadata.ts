@@ -8,11 +8,11 @@ import {
 	detectPipelineProvider,
 	detectPipelineRunId,
 } from "./detect-ci.js";
-import { detectPackageName } from "./detect-package.js";
 import { detectProjectName } from "./detect-project.js";
 import { detectRepo } from "./detect-repo.js";
+import { detectSolution } from "./detect-solution.js";
 
-const DEFAULT_COLLECTOR_VERSION = "0.1.0";
+export const DEFAULT_COLLECTOR_VERSION = "0.1.0";
 
 function parseTags(value: unknown): string[] {
 	if (typeof value !== "string" || value.trim().length === 0) {
@@ -61,7 +61,7 @@ export function parseCommonMetadata(args: CommonArgs): CommonMetadata {
 		pipelineRunId,
 		pipelineProvider,
 		environment: environmentRaw,
-		packageName: asOptionalString(detectPackageName(args)),
+		solution: asOptionalString(detectSolution(args)),
 		projectName: asOptionalString(detectProjectName(args)),
 		collectorVersion,
 	};

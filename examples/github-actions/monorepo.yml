@@ -1,6 +1,6 @@
 # Monorepo: collect ESLint metrics from every pnpm workspace package.
 # PNPM_PACKAGE_NAME is auto-detected per workspace, populating the
-# "package" field so you can drill down from repo → package in Elastic.
+# "project" field so you can drill down from repo → project in Elastic.
 
 steps:
   - run: npm install -g qualink

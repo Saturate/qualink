@@ -16,7 +16,7 @@ export interface BaseMetricDocument {
 	tool: string;
 	languages: Language[];
 	repo: string;
-	package: string | null;
+	solution: string | null;
 	project: string | null;
 	category: string | null;
 	tags: string[];
@@ -162,7 +162,7 @@ export interface CommonMetadata {
 	pipelineRunId: string;
 	pipelineProvider: string;
 	environment: Environment;
-	packageName: string | null;
+	solution: string | null;
 	projectName: string | null;
 	collectorVersion: string;
 }
