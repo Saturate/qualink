@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 - Add pipeline usage collector (#9) by @Saturate in [#9](https://github.com/Saturate/qualink/pull/9) ([969decc](https://github.com/Saturate/qualink/commit/969decc570185fe75722d72e0b746923157292e5))
 
 
+### Miscellaneous
+
+- Add prepare-release workflow (#10) by @Saturate in [#10](https://github.com/Saturate/qualink/pull/10) ([4c735bf](https://github.com/Saturate/qualink/commit/4c735bf29bee83fe7639e194db63b12b9d1626ab))
+
+
 ## [0.3.0] - 2026-03-03
 
 ### Features
