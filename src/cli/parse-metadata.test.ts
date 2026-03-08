@@ -1,55 +1,14 @@
-import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import type { CommonArgs } from "./common-args.js";
-import { parseCommonMetadata } from "./parse-metadata.js";
-
-// ── helpers ──────────────────────────────────────────────────────────
-
-const CI_ENV_PREFIXES = [
-	"QUALINK_",
-	"BUILD_",
-	"GITHUB_",
-	"CI_",
-	"TF_BUILD",
-	"PNPM_PACKAGE_NAME",
-	"CI",
-];
-
-function createTempGitRepo(name: string, remoteUrl?: string): string {
-	const dir = mkdtempSync(join(tmpdir(), `qualink-e2e-${name}-`));
-	const git = (args: string[]) => execFileSync("git", args, { cwd: dir, stdio: "ignore" });
-
-	git(["init"]);
-	git(["config", "user.email", "test@test.com"]);
-	git(["config", "user.name", "Test"]);
-	git(["checkout", "-b", "main"]);
-	git(["commit", "--allow-empty", "-m", "init"]);
-
-	if (remoteUrl) {
-		git(["remote", "add", "origin", remoteUrl]);
-	}
-
-	return dir;
-}
-
-function writeJson(dir: string, relativePath: string, data: unknown): void {
-	const full = join(dir, relativePath);
-	mkdirSync(join(full, ".."), { recursive: true });
-	writeFileSync(full, JSON.stringify(data));
-}
-
-function writeFile(dir: string, relativePath: string, content = ""): void {
-	const full = join(dir, relativePath);
-	mkdirSync(join(full, ".."), { recursive: true });
-	writeFileSync(full, content);
-}
-
-function emptyArgs(overrides: Partial<CommonArgs> = {}): CommonArgs {
-	return { ...overrides };
-}
+import {
+	createTempGitRepo,
+	emptyArgs,
+	stripCiEnvVars,
+	writeFile,
+	writeJson,
+} from "../test-helpers.js";
+import { DEFAULT_COLLECTOR_VERSION, parseCommonMetadata } from "./parse-metadata.js";
 
 // ── environment & cwd isolation ──────────────────────────────────────
 
@@ -59,12 +18,7 @@ let savedCwd: string;
 beforeEach(() => {
 	savedEnv = { ...process.env };
 	savedCwd = process.cwd();
-
-	for (const key of Object.keys(process.env)) {
-		if (CI_ENV_PREFIXES.some((p) => key.startsWith(p) || key === p)) {
-			delete process.env[key];
-		}
-	}
+	stripCiEnvVars();
 });
 
 afterEach(() => {
@@ -119,10 +73,29 @@ describe(".NET solution", () => {
 		expect(meta.projectName).toBe("from-env");
 	});
 
-	it("packageName is null (no package.json)", () => {
+	it("detects solution from .sln", () => {
 		process.chdir(join(root, "src/MyApp.Api"));
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBeNull();
+		expect(meta.solution).toBe("MyApp");
+	});
+
+	it("solution detected at repo root too", () => {
+		process.chdir(root);
+		const meta = parseCommonMetadata(emptyArgs());
+		expect(meta.solution).toBe("MyApp");
+	});
+
+	it("CLI --solution overrides .sln detection", () => {
+		process.chdir(join(root, "src/MyApp.Api"));
+		const meta = parseCommonMetadata(emptyArgs({ solution: "override-sln" }));
+		expect(meta.solution).toBe("override-sln");
+	});
+
+	it("QUALINK_SOLUTION env overrides .sln detection", () => {
+		process.env.QUALINK_SOLUTION = "env-sln";
+		process.chdir(join(root, "src/MyApp.Api"));
+		const meta = parseCommonMetadata(emptyArgs());
+		expect(meta.solution).toBe("env-sln");
 	});
 
 	it("repo parsed from Azure DevOps remote", () => {
@@ -149,35 +122,41 @@ describe("pnpm monorepo", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
-	it("detects packageName from package.json", () => {
+	it("detects projectName from package.json", () => {
 		process.chdir(join(root, "packages/ui"));
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBe("@myorg/ui");
+		expect(meta.projectName).toBe("@myorg/ui");
 	});
 
-	it("detects different package in different subdir", () => {
+	it("detects different project in different subdir", () => {
 		process.chdir(join(root, "packages/api"));
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBe("@myorg/api");
+		expect(meta.projectName).toBe("@myorg/api");
 	});
 
 	it("PNPM_PACKAGE_NAME takes priority over filesystem", () => {
 		process.env.PNPM_PACKAGE_NAME = "from-pnpm";
 		process.chdir(join(root, "packages/ui"));
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBe("from-pnpm");
+		expect(meta.projectName).toBe("from-pnpm");
 	});
 
-	it("no packageName at repo root", () => {
+	it("no projectName at repo root", () => {
 		process.chdir(root);
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBeNull();
+		expect(meta.projectName).toBeNull();
 	});
 
-	it("projectName is null (no .csproj)", () => {
+	it("detects solution from workspace root package.json", () => {
 		process.chdir(join(root, "packages/ui"));
 		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.projectName).toBeNull();
+		expect(meta.solution).toBe("my-pnpm-mono");
+	});
+
+	it("no solution at repo root", () => {
+		process.chdir(root);
+		const meta = parseCommonMetadata(emptyArgs());
+		expect(meta.solution).toBeNull();
 	});
 
 	it("repo parsed from SSH remote", () => {
@@ -201,22 +180,22 @@ describe("npm single project", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
-	it("no packageName at repo root", () => {
-		process.chdir(root);
-		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBeNull();
-	});
-
-	it("projectName is null", () => {
+	it("no projectName at repo root", () => {
 		process.chdir(root);
 		const meta = parseCommonMetadata(emptyArgs());
 		expect(meta.projectName).toBeNull();
 	});
 
-	it("explicit --package arg still works", () => {
+	it("no solution at repo root", () => {
 		process.chdir(root);
-		const meta = parseCommonMetadata(emptyArgs({ package: "explicit" }));
-		expect(meta.packageName).toBe("explicit");
+		const meta = parseCommonMetadata(emptyArgs());
+		expect(meta.solution).toBeNull();
+	});
+
+	it("explicit --project arg still works", () => {
+		process.chdir(root);
+		const meta = parseCommonMetadata(emptyArgs({ project: "explicit" }));
+		expect(meta.projectName).toBe("explicit");
 	});
 
 	it("repo parsed from HTTPS remote", () => {
@@ -241,16 +220,16 @@ describe("generic monorepo", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
-	it("packageName null (no package.json in subdir)", () => {
-		process.chdir(join(root, "apps/frontend"));
-		const meta = parseCommonMetadata(emptyArgs());
-		expect(meta.packageName).toBeNull();
-	});
-
-	it("projectName null (no .csproj in subdir)", () => {
+	it("projectName null (no package.json in subdir)", () => {
 		process.chdir(join(root, "apps/frontend"));
 		const meta = parseCommonMetadata(emptyArgs());
 		expect(meta.projectName).toBeNull();
+	});
+
+	it("solution null (no .sln or workspace root)", () => {
+		process.chdir(join(root, "apps/frontend"));
+		const meta = parseCommonMetadata(emptyArgs());
+		expect(meta.solution).toBeNull();
 	});
 
 	it("repo falls back to cwd basename", () => {
@@ -378,9 +357,9 @@ describe("parseCommonMetadata", () => {
 		expect(meta).toHaveProperty("pipelineProvider");
 		expect(meta).toHaveProperty("pipelineRunId");
 		expect(meta).toHaveProperty("environment", "ci");
-		expect(meta).toHaveProperty("collectorVersion", "0.1.0");
+		expect(meta).toHaveProperty("collectorVersion", DEFAULT_COLLECTOR_VERSION);
 		expect(meta).toHaveProperty("tags");
-		expect(meta).toHaveProperty("packageName");
+		expect(meta).toHaveProperty("solution");
 		expect(meta).toHaveProperty("projectName");
 		expect(meta).toHaveProperty("category");
 	});

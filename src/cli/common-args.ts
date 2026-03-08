@@ -10,7 +10,7 @@ export interface CommonArgs {
 	pipelineRunId?: unknown;
 	pipelineProvider?: unknown;
 	environment?: unknown;
-	package?: unknown;
+	solution?: unknown;
 	project?: unknown;
 	collectorVersion?: unknown;
 	elasticUrl?: unknown;
@@ -65,7 +65,7 @@ export const commonArgs = {
 	"pipeline-run-id": { type: "string" as const },
 	"pipeline-provider": { type: "string" as const },
 	environment: { type: "string" as const, default: "ci" },
-	package: { type: "string" as const },
+	solution: { type: "string" as const },
 	project: { type: "string" as const },
 	"collector-version": { type: "string" as const },
 	"elastic-url": { type: "string" as const },
