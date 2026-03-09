@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Documentation
+
+- Update readme for v0.4.0 multi-collect and project hierarchy by @Saturate ([42ec13d](https://github.com/Saturate/qualink/commit/42ec13d76dc9e30be9f406d95f3cf05418acaf75))
+
+
 ## [0.4.0] - 2026-03-09
 
 ### Features
