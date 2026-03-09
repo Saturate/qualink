@@ -36,7 +36,7 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          NOTES=$(pnpm git-cliff --latest --strip header)
+          NOTES=$(pnpm git-cliff --latest --strip all)
           # Use delimiter to handle multiline output
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "notes<<$EOF" >> "$GITHUB_OUTPUT"
