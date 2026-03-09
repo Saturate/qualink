@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 
 - Update readme for v0.4.0 multi-collect and project hierarchy by @Saturate ([42ec13d](https://github.com/Saturate/qualink/commit/42ec13d76dc9e30be9f406d95f3cf05418acaf75))
 
+- Use = syntax for --dir and --config examples by @Saturate ([933761a](https://github.com/Saturate/qualink/commit/933761aab611508b7e32ed19e24b19b3522c74d9))
+
 
 ## [0.4.0] - 2026-03-09
 
