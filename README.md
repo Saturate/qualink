@@ -118,13 +118,13 @@ qualink collect coverage-dotnet --input coverage.cobertura.xml --sink elastic --
 Auto-discover report files in a directory tree:
 
 ```bash
-qualink collect --dir ./output --repo myapp --sink elastic
+qualink collect --dir=./output --repo myapp --sink elastic
 ```
 
 Or use a config file for explicit control:
 
 ```bash
-qualink collect --config qualink.json --repo myapp --sink elastic
+qualink collect --config=qualink.json --repo myapp --sink elastic
 ```
 
 Config file example (`qualink.json`):
