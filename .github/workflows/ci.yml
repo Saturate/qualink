@@ -30,7 +30,7 @@ jobs:
       - run: pnpm test
 
   update-changelog:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore(release):')
     needs: lint-build-test
     runs-on: ubuntu-latest
     steps:
