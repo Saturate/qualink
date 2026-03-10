@@ -1,6 +1,6 @@
 {
   "name": "qualink",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Collect, normalize, and relay code quality metrics from CI",
   "license": "MIT",
   "type": "module",

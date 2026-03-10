@@ -2,11 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.6.0] - 2026-03-10
 
 ### Features
 
 - Add default stderr logging for CI visibility by @Saturate ([a637298](https://github.com/Saturate/qualink/commit/a637298d8ad67fa91afe4c7ad65a79feac2c2b87))
+
+
+### Documentation
+
+- Add release workflow to CONTRIBUTING.md by @Saturate ([85df318](https://github.com/Saturate/qualink/commit/85df3188ab9d55b14b01778db3a2cf931f33bf11))
 
 
 ## [0.5.0] - 2026-03-10
