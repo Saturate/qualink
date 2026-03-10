@@ -52,7 +52,7 @@ A collector parses tool-specific output and returns normalized metric documents.
 
 A sink delivers normalized documents to a destination.
 
-1. Create `src/sinks/your-sink.ts` implementing the `Sink` interface from `src/sinks/types.ts` — it has a single `send(input: SendInput): Promise<void>` method
+1. Create `src/sinks/your-sink.ts` implementing the `Sink` interface from `src/sinks/types.ts` — it has a single `send(input: SendInput): Promise<SendResult>` method (wrap with `performance.now()` timing)
 2. Add your sink name to `SinkKind` in `src/sinks/index.ts`
 3. Update `createSink()` factory in the same file to instantiate it
 4. Add tests
@@ -73,3 +73,12 @@ docs: update sink configuration examples
 - Include tests for new functionality
 - Make sure `pnpm run lint && pnpm run build && pnpm test` passes
 - The changelog is generated automatically — no need to update it
+
+## Releasing
+
+Releases are cut via GitHub Actions — no manual steps needed locally.
+
+1. **Prepare**: run the `Prepare Release` workflow on `main` (Actions → Prepare Release → Run workflow). It bumps `package.json`, updates `CHANGELOG.md`, commits, and tags.
+2. **Publish**: the `Release` workflow triggers automatically on the new tag — it creates a GitHub release and publishes to npm.
+
+The version is auto-calculated from conventional commits by default, or you can pass `major`, `minor`, `patch`, or an exact version like `1.2.3`.
