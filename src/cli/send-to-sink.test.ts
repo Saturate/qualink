@@ -25,13 +25,16 @@ function makeDummyDoc(overrides: Partial<MetaMetricDocument> = {}): MetaMetricDo
 
 describe("sendToSink", () => {
 	let writeSpy: ReturnType<typeof vi.spyOn>;
+	let stderrSpy: ReturnType<typeof vi.spyOn>;
 
 	beforeEach(() => {
 		writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+		stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true);
 	});
 
 	afterEach(() => {
 		writeSpy.mockRestore();
+		stderrSpy.mockRestore();
 	});
 
 	it("throws when documents empty and allow-empty not set", async () => {
@@ -114,5 +117,21 @@ describe("sendToSink", () => {
 				process.env.QUALINK_SINK = saved;
 			}
 		}
+	});
+
+	it("logs sent: line to stderr for stdout sink", async () => {
+		const doc = makeDummyDoc();
+		await sendToSink("meta", { sink: "stdout" }, [doc]);
+
+		const stderrOutput = stderrSpy.mock.calls.map((c) => c[0] as string).join("");
+		expect(stderrOutput).toContain("sent: 1 document(s) → stdout");
+	});
+
+	it("does not log sent: line in dry-run mode", async () => {
+		const doc = makeDummyDoc();
+		await sendToSink("meta", { "dry-run": true }, [doc]);
+
+		const stderrOutput = stderrSpy.mock.calls.map((c) => c[0] as string).join("");
+		expect(stderrOutput).not.toContain("sent:");
 	});
 });

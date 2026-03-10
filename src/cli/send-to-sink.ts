@@ -1,3 +1,4 @@
+import { INDEX_BY_TYPE } from "../sinks/elastic.js";
 import type { SinkConfig } from "../sinks/index.js";
 import { createSink } from "../sinks/index.js";
 import type { MetricType, NormalizedDocument } from "../types.js";
@@ -97,8 +98,21 @@ export async function sendToSink(
 
 	const sink = createSink(sinkConfig);
 
-	await sink.send({
+	const { durationMs } = await sink.send({
 		metricType,
 		documents,
 	});
+
+	const count = documents.length;
+	const ms = Math.round(durationMs);
+	if (sinkKind === "elastic") {
+		const index = INDEX_BY_TYPE[metricType];
+		const url = sinkConfig.elasticUrl ?? "";
+		process.stderr.write(`  sent: ${count} document(s) → elastic ${index} (${url}) ${ms}ms\n`);
+	} else if (sinkKind === "loki") {
+		const url = sinkConfig.lokiUrl ?? "";
+		process.stderr.write(`  sent: ${count} document(s) → loki (${url}) ${ms}ms\n`);
+	} else {
+		process.stderr.write(`  sent: ${count} document(s) → stdout\n`);
+	}
 }

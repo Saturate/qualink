@@ -1,5 +1,7 @@
+import { stat } from "node:fs/promises";
 import { defineCommand } from "citty";
 import type { CommonMetadata, MetricType, NormalizedDocument } from "../types.js";
+import { formatBytes } from "../utils/format.js";
 import { CliError } from "./cli-error.js";
 import { type CommonArgs, commonArgs, isDryRun } from "./common-args.js";
 import { parseCommonMetadata } from "./parse-metadata.js";
@@ -32,6 +34,11 @@ export function createCollectorCommand<TExtra extends Record<string, unknown>>(
 		async run({ args }) {
 			try {
 				const parsedArgs: CommonArgs = args;
+				const inputPath = typeof parsedArgs.input === "string" ? parsedArgs.input : undefined;
+				if (inputPath) {
+					const fileStat = await stat(inputPath);
+					process.stderr.write(`  read: ${inputPath} (${formatBytes(fileStat.size)})\n`);
+				}
 				const metadata = parseCommonMetadata(parsedArgs);
 				const { metricType, documents } = await config.collect(parsedArgs, metadata);
 

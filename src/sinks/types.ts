@@ -5,6 +5,10 @@ export interface SendInput {
 	documents: NormalizedDocument[];
 }
 
+export interface SendResult {
+	durationMs: number;
+}
+
 export interface Sink {
-	send(input: SendInput): Promise<void>;
+	send(input: SendInput): Promise<SendResult>;
 }

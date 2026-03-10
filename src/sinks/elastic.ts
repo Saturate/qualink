@@ -1,6 +1,6 @@
 import type { MetricType, NormalizedDocument } from "../types.js";
 import { isRecord } from "../utils/guards.js";
-import type { SendInput, Sink } from "./types.js";
+import type { SendInput, SendResult, Sink } from "./types.js";
 
 interface ElasticSinkOptions {
 	url: string;
@@ -9,7 +9,7 @@ interface ElasticSinkOptions {
 	retryBackoffMs: number;
 }
 
-const INDEX_BY_TYPE: Record<MetricType, string> = {
+export const INDEX_BY_TYPE: Record<MetricType, string> = {
 	biome: "codequality-biome",
 	eslint: "codequality-eslint",
 	lighthouse: "codequality-lighthouse",
@@ -91,11 +91,12 @@ export class ElasticSink implements Sink {
 		this.retryBackoffMs = options.retryBackoffMs;
 	}
 
-	public async send(input: SendInput): Promise<void> {
+	public async send(input: SendInput): Promise<SendResult> {
 		if (input.documents.length === 0) {
-			return;
+			return { durationMs: 0 };
 		}
 
+		const start = performance.now();
 		const indexName = INDEX_BY_TYPE[input.metricType];
 		let documents = input.documents;
 
@@ -140,7 +141,7 @@ export class ElasticSink implements Sink {
 							`Elastic bulk request completed with ${nonRetryableErrors.length} non-retryable item error(s)`,
 						);
 					}
-					return;
+					return { durationMs: performance.now() - start };
 				}
 
 				if (attempt > this.retryMax) {
@@ -156,7 +157,7 @@ export class ElasticSink implements Sink {
 				continue;
 			}
 
-			return;
+			return { durationMs: performance.now() - start };
 		}
 	}
 }

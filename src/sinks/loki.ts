@@ -1,5 +1,5 @@
 import type { NormalizedDocument } from "../types.js";
-import type { SendInput, Sink } from "./types.js";
+import type { SendInput, SendResult, Sink } from "./types.js";
 
 export interface LokiSinkOptions {
 	url: string;
@@ -78,10 +78,12 @@ export class LokiSink implements Sink {
 		this.retryBackoffMs = options.retryBackoffMs;
 	}
 
-	public async send(input: SendInput): Promise<void> {
+	public async send(input: SendInput): Promise<SendResult> {
 		if (input.documents.length === 0) {
-			return;
+			return { durationMs: 0 };
 		}
+
+		const start = performance.now();
 
 		const payload = buildLokiPayload(input.documents);
 		const body = JSON.stringify(payload);
@@ -110,7 +112,7 @@ export class LokiSink implements Sink {
 			});
 
 			if (response.status === 204 || response.ok) {
-				return;
+				return { durationMs: performance.now() - start };
 			}
 
 			const responseText = await response.text();

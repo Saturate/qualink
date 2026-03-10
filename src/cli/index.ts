@@ -1,3 +1,4 @@
+import { relative } from "node:path";
 import { defineCommand, runMain } from "citty";
 import type { MetricType, NormalizedDocument } from "../types.js";
 import { CliError } from "./cli-error.js";
@@ -75,6 +76,12 @@ async function runDirMode(dir: string, args: CommonArgs): Promise<void> {
 	const metadata = parseCommonMetadata(args);
 	const discovered = await discoverFiles(dir);
 
+	for (const [collectorKey, files] of discovered) {
+		for (const filePath of files) {
+			process.stderr.write(`  scan: ${relative(dir, filePath)} → ${collectorKey}\n`);
+		}
+	}
+
 	const accumulated = new Map<MetricType, NormalizedDocument[]>();
 	const counts = new Map<CollectorKey, number>();
 
@@ -101,6 +108,12 @@ async function runConfigMode(configValue: string, args: CommonArgs): Promise<voi
 	const metadata = parseCommonMetadata(args);
 	const entries = await parseConfig(configValue);
 	const resolved = await resolveConfig(entries, ".");
+
+	for (const entry of resolved) {
+		for (const filePath of entry.files) {
+			process.stderr.write(`  scan: ${filePath} → ${entry.type}\n`);
+		}
+	}
 
 	const accumulated = new Map<MetricType, NormalizedDocument[]>();
 	const counts = new Map<CollectorKey, number>();
