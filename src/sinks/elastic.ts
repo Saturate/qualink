@@ -16,6 +16,7 @@ const INDEX_BY_TYPE: Record<MetricType, string> = {
 	"coverage-js": "codequality-coverage-js",
 	sarif: "codequality-sarif",
 	"coverage-dotnet": "codequality-coverage-dotnet",
+	junit: "codequality-junit",
 	meta: "codequality-meta",
 	pipeline: "codequality-pipeline",
 };

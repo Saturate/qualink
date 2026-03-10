@@ -7,6 +7,7 @@ export type MetricType =
 	| "coverage-js"
 	| "sarif"
 	| "coverage-dotnet"
+	| "junit"
 	| "meta"
 	| "pipeline";
 
@@ -129,6 +130,17 @@ export interface DotnetCoverageMetricDocument extends CoverageMetricDocument {
 	coverage_format: "cobertura" | "opencover" | (string & {});
 }
 
+export interface JunitMetricDocument extends BaseMetricDocument {
+	metric_type: "junit";
+	tests: number;
+	passed: number;
+	failures: number;
+	errors: number;
+	skipped: number;
+	duration_ms: number | null;
+	suites: number;
+}
+
 export interface MetaMetricDocument extends BaseMetricDocument {
 	metric_type: "meta";
 }
@@ -150,6 +162,7 @@ export type NormalizedDocument =
 	| CoverageJsMetricDocument
 	| SarifMetricDocument
 	| DotnetCoverageMetricDocument
+	| JunitMetricDocument
 	| MetaMetricDocument
 	| PipelineMetricDocument;
 

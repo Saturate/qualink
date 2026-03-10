@@ -17,7 +17,8 @@
 					"coverage-js",
 					"coverage-dotnet",
 					"sarif",
-					"lighthouse"
+					"lighthouse",
+					"junit"
 				],
 				"description": "The collector type to use for this entry"
 			},

@@ -6,6 +6,7 @@ import {
 	coverageDotnetCommand,
 	coverageJsCommand,
 	eslintCommand,
+	junitCommand,
 	lighthouseCommand,
 	metaCommand,
 	pipelineCommand,
@@ -50,6 +51,7 @@ const collectCommand = defineCommand({
 		"coverage-js": coverageJsCommand,
 		sarif: sarifCommand,
 		"coverage-dotnet": coverageDotnetCommand,
+		junit: junitCommand,
 	},
 	async run({ args }) {
 		const parsedArgs: CommonArgs = args;

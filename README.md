@@ -140,7 +140,7 @@ Config file example (`qualink.json`):
 Each entry supports optional overrides: `tags`, `category`, `project`, `solution`, `url`.
 See [qualink-config.schema.json](qualink-config.schema.json) for the full schema.
 
-Auto-discovery recognizes: `eslint-report.json`, `biome-report.json`, `coverage-summary.json`, `coverage.cobertura.xml`, `*.sarif`/`*.sarif.json`, and `lhr-*.json` inside `.lighthouseci/`.
+Auto-discovery recognizes: `eslint-report.json`, `biome-report.json`, `coverage-summary.json`, `coverage.cobertura.xml`, `*.sarif`/`*.sarif.json`, `lhr-*.json` inside `.lighthouseci/`, `junit.xml`, and `TEST-*.xml`.
 
 ### Pipeline tracking
 
@@ -161,6 +161,7 @@ Collectors:
 - `coverage-js` (Istanbul/Vitest JSON)
 - `sarif` (Roslyn or generic SARIF JSON)
 - `coverage-dotnet` (Cobertura/OpenCover XML)
+- `junit` (JUnit XML)
 
 ESLint file-level options (optional):
 

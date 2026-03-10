@@ -2,7 +2,7 @@ import type { MetricType } from "../../types.js";
 
 export type CollectorKey = Extract<
 	MetricType,
-	"eslint" | "biome" | "coverage-js" | "coverage-dotnet" | "sarif" | "lighthouse"
+	"eslint" | "biome" | "coverage-js" | "coverage-dotnet" | "sarif" | "lighthouse" | "junit"
 >;
 
 export const COLLECTOR_KEYS: readonly CollectorKey[] = [
@@ -12,6 +12,7 @@ export const COLLECTOR_KEYS: readonly CollectorKey[] = [
 	"coverage-dotnet",
 	"sarif",
 	"lighthouse",
+	"junit",
 ] as const;
 
 export interface FilePattern {
@@ -29,9 +30,13 @@ export const COLLECTOR_PATTERNS: Record<CollectorKey, FilePattern[]> = {
 	eslint: [{ basename: "eslint-report.json" }],
 	biome: [{ basename: "biome-report.json" }],
 	"coverage-js": [{ basename: "coverage-summary.json" }],
-	"coverage-dotnet": [{ basename: "coverage.cobertura.xml" }, { basename: "cobertura-coverage.xml" }],
+	"coverage-dotnet": [
+		{ basename: "coverage.cobertura.xml" },
+		{ basename: "cobertura-coverage.xml" },
+	],
 	sarif: [{ extensions: [".sarif", ".sarif.json"] }],
 	lighthouse: [{ prefix: "lhr-", extensions: [".json"], parentDir: ".lighthouseci" }],
+	junit: [{ basename: "junit.xml" }, { prefix: "TEST-", extensions: [".xml"] }],
 };
 
 export const IGNORED_DIRS = new Set(["node_modules", ".git"]);

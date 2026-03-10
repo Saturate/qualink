@@ -2,6 +2,7 @@ import { collectBiome } from "../../collectors/biome.js";
 import { collectCoverageDotnet } from "../../collectors/coverage-dotnet.js";
 import { collectCoverageJs } from "../../collectors/coverage-js.js";
 import { collectEslint } from "../../collectors/eslint.js";
+import { collectJunit } from "../../collectors/junit.js";
 import { collectLighthouse } from "../../collectors/lighthouse.js";
 import { collectSarif } from "../../collectors/sarif.js";
 import type { CommonMetadata, MetricType, NormalizedDocument } from "../../types.js";
@@ -88,6 +89,12 @@ export async function runCollector(
 			const url = urlOverride ?? extractLighthouseUrl(input);
 			const documents = collectLighthouse(input, metadata, url);
 			return { metricType: "lighthouse", documents };
+		}
+
+		case "junit": {
+			const input = await readTextFile(filePath);
+			const documents = collectJunit(input, metadata);
+			return { metricType: "junit", documents };
 		}
 	}
 }
