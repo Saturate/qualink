@@ -51,6 +51,14 @@ describe("discoverFiles", () => {
 		expect(result.get("coverage-dotnet")).toHaveLength(1);
 	});
 
+	it("finds cobertura-coverage.xml", async () => {
+		await writeFile(join(testDir, "cobertura-coverage.xml"), "<coverage/>");
+
+		const result = await discoverFiles(testDir);
+
+		expect(result.get("coverage-dotnet")).toHaveLength(1);
+	});
+
 	it("finds .sarif files", async () => {
 		await writeFile(join(testDir, "results.sarif"), "{}");
 		await writeFile(join(testDir, "other.sarif.json"), "{}");

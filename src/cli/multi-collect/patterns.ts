@@ -29,7 +29,7 @@ export const COLLECTOR_PATTERNS: Record<CollectorKey, FilePattern[]> = {
 	eslint: [{ basename: "eslint-report.json" }],
 	biome: [{ basename: "biome-report.json" }],
 	"coverage-js": [{ basename: "coverage-summary.json" }],
-	"coverage-dotnet": [{ basename: "coverage.cobertura.xml" }],
+	"coverage-dotnet": [{ basename: "coverage.cobertura.xml" }, { basename: "cobertura-coverage.xml" }],
 	sarif: [{ extensions: [".sarif", ".sarif.json"] }],
 	lighthouse: [{ prefix: "lhr-", extensions: [".json"], parentDir: ".lighthouseci" }],
 };
