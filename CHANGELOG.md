@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Features
+
+- Add default stderr logging for CI visibility by @Saturate ([a637298](https://github.com/Saturate/qualink/commit/a637298d8ad67fa91afe4c7ad65a79feac2c2b87))
+
+
 ## [0.5.0] - 2026-03-10
 
 ### Features
