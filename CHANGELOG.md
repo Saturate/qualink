@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Features
+
+- Recognize cobertura-coverage.xml in auto-discovery by @Saturate ([aa5f175](https://github.com/Saturate/qualink/commit/aa5f1759c26cc922f7ef88e9dd871c6643f1469f))
+
+- Add JUnit XML collector by @Saturate ([38dab11](https://github.com/Saturate/qualink/commit/38dab1130c9c1842a55d6479315df7f6d2c7d360))
+
+
 ### Bug Fixes
 
 - Strip version heading from release notes by @Saturate ([dd0313b](https://github.com/Saturate/qualink/commit/dd0313b468270e44c370003a6fe0baee69ae0a4f))
