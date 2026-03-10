@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Bug Fixes
+
+- Skip changelog job on release commits by @Saturate ([9869e86](https://github.com/Saturate/qualink/commit/9869e86e01824ddad5e9ebac6495f42546b39b36))
+
+
 ## [0.6.0] - 2026-03-10
 
 ### Features
