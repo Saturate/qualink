@@ -4,6 +4,7 @@ import { createSink } from "../sinks/index.js";
 import type { MetricType, NormalizedDocument } from "../types.js";
 import { CliError } from "./cli-error.js";
 import { argValue, type CommonArgs, envOrArg, isDryRun } from "./common-args.js";
+import { log } from "./log.js";
 
 function parseNumberInput(value: unknown, fallback: number): number {
 	if (typeof value === "number" && Number.isFinite(value)) {
@@ -108,11 +109,11 @@ export async function sendToSink(
 	if (sinkKind === "elastic") {
 		const index = INDEX_BY_TYPE[metricType];
 		const url = sinkConfig.elasticUrl ?? "";
-		process.stderr.write(`  sent: ${count} document(s) → elastic ${index} (${url}) ${ms}ms\n`);
+		log(`  sent: ${count} document(s) → elastic ${index} (${url}) ${ms}ms`);
 	} else if (sinkKind === "loki") {
 		const url = sinkConfig.lokiUrl ?? "";
-		process.stderr.write(`  sent: ${count} document(s) → loki (${url}) ${ms}ms\n`);
+		log(`  sent: ${count} document(s) → loki (${url}) ${ms}ms`);
 	} else {
-		process.stderr.write(`  sent: ${count} document(s) → stdout\n`);
+		log(`  sent: ${count} document(s) → stdout`);
 	}
 }
