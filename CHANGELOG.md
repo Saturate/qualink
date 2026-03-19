@@ -8,6 +8,15 @@ All notable changes to this project will be documented in this file.
 
 - Skip changelog job on release commits by @Saturate ([9869e86](https://github.com/Saturate/qualink/commit/9869e86e01824ddad5e9ebac6495f42546b39b36))
 
+- Update fast-xml-parser to 5.5.6 (#15) by @Saturate in [#15](https://github.com/Saturate/qualink/pull/15) ([e5a2eeb](https://github.com/Saturate/qualink/commit/e5a2eeba6ab7bcce4c8384c50617570c51a44b2f))
+
+- Use repo.keyword and show all issues over time (#13) by @Saturate in [#13](https://github.com/Saturate/qualink/pull/13) ([a667a67](https://github.com/Saturate/qualink/commit/a667a674be3a398b17f28a3baa3255c625ae59b7))
+
+
+### Refactor
+
+- Rename coverage-dotnet to coverage-cobertura (#16) by @Saturate in [#16](https://github.com/Saturate/qualink/pull/16) ([344f9fa](https://github.com/Saturate/qualink/commit/344f9fa27d1bd594b2299598ed9f8ce128e1e9fa))
+
 
 ## [0.6.0] - 2026-03-10
 
