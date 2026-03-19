@@ -182,11 +182,11 @@ describe("resolveFileMetadata — .NET solution", () => {
 		expect(overrides.projectName).toBe("MyApp.Api");
 	});
 
-	it("detects projectName from .csproj for coverage-dotnet", () => {
+	it("detects projectName from .csproj for coverage-cobertura", () => {
 		process.chdir(root);
 		const overrides = resolveFileMetadata(
 			join(root, "src/MyApp.Core/coverage.cobertura.xml"),
-			"coverage-dotnet",
+			"coverage-cobertura",
 		);
 		expect(overrides.projectName).toBe("MyApp.Core");
 	});

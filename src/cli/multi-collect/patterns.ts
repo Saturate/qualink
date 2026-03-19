@@ -2,14 +2,14 @@ import type { MetricType } from "../../types.js";
 
 export type CollectorKey = Extract<
 	MetricType,
-	"eslint" | "biome" | "coverage-js" | "coverage-dotnet" | "sarif" | "lighthouse" | "junit"
+	"eslint" | "biome" | "coverage-js" | "coverage-cobertura" | "sarif" | "lighthouse" | "junit"
 >;
 
 export const COLLECTOR_KEYS: readonly CollectorKey[] = [
 	"eslint",
 	"biome",
 	"coverage-js",
-	"coverage-dotnet",
+	"coverage-cobertura",
 	"sarif",
 	"lighthouse",
 	"junit",
@@ -30,7 +30,7 @@ export const COLLECTOR_PATTERNS: Record<CollectorKey, FilePattern[]> = {
 	eslint: [{ basename: "eslint-report.json" }],
 	biome: [{ basename: "biome-report.json" }],
 	"coverage-js": [{ basename: "coverage-summary.json" }],
-	"coverage-dotnet": [
+	"coverage-cobertura": [
 		{ basename: "coverage.cobertura.xml" },
 		{ basename: "cobertura-coverage.xml" },
 	],

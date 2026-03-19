@@ -12,8 +12,8 @@ steps:
       arguments: --collect:"XPlat Code Coverage"
     displayName: Run .NET tests with coverage
 
-  - script: npx qualink collect coverage-dotnet --input $(Agent.TempDirectory)/**/coverage.cobertura.xml
-    displayName: Report .NET coverage
+  - script: npx qualink collect coverage-cobertura --input $(Agent.TempDirectory)/**/coverage.cobertura.xml
+    displayName: Report Cobertura XML coverage
     env:
       ELASTIC_URL: $(ELASTIC_URL)
       ELASTIC_API_KEY: $(ELASTIC_API_KEY)

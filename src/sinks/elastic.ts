@@ -15,7 +15,7 @@ export const INDEX_BY_TYPE: Record<MetricType, string> = {
 	lighthouse: "codequality-lighthouse",
 	"coverage-js": "codequality-coverage-js",
 	sarif: "codequality-sarif",
-	"coverage-dotnet": "codequality-coverage-dotnet",
+	"coverage-cobertura": "codequality-coverage-cobertura",
 	junit: "codequality-junit",
 	meta: "codequality-meta",
 	pipeline: "codequality-pipeline",

@@ -110,7 +110,7 @@ qualink collect <collector> --input <path> --sink elastic [flags]
 ```bash
 qualink collect eslint --input eslint-report.json --sink elastic --repo frontend-mono --category frontend --tags frontend,web
 qualink collect sarif --input analyzers.sarif --sink elastic --repo backend-api --category backend --tags backend,api
-qualink collect coverage-dotnet --input coverage.cobertura.xml --sink elastic --repo backend-api
+qualink collect coverage-cobertura --input coverage.cobertura.xml --sink elastic --repo backend-api
 ```
 
 ### Multi-collect
@@ -160,7 +160,7 @@ Collectors:
 - `lighthouse` (Lighthouse JSON)
 - `coverage-js` (Istanbul/Vitest JSON)
 - `sarif` (Roslyn or generic SARIF JSON)
-- `coverage-dotnet` (Cobertura/OpenCover XML)
+- `coverage-cobertura` (Cobertura/OpenCover XML)
 - `junit` (JUnit XML)
 
 ESLint file-level options (optional):

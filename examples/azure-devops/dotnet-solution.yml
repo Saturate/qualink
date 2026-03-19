@@ -45,7 +45,7 @@ steps:
         project_name=$(basename "$project_dir" | sed 's/\.Tests$//')
         coverage=$(find "$project_dir" -name "coverage.cobertura.xml" | head -1)
         if [ -n "$coverage" ]; then
-          qualink collect coverage-dotnet --input "$coverage" --project "$project_name"
+          qualink collect coverage-cobertura --input "$coverage" --project "$project_name"
         fi
       done
     displayName: Report coverage (per project)

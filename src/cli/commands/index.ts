@@ -1,5 +1,5 @@
 export { biomeCommand } from "./biome.js";
-export { coverageDotnetCommand } from "./coverage-dotnet.js";
+export { coverageCoberturaCommand } from "./coverage-cobertura.js";
 export { coverageJsCommand } from "./coverage-js.js";
 export { eslintCommand } from "./eslint.js";
 export { junitCommand } from "./junit.js";
