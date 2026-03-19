@@ -6,7 +6,7 @@ export type MetricType =
 	| "lighthouse"
 	| "coverage-js"
 	| "sarif"
-	| "coverage-dotnet"
+	| "coverage-cobertura"
 	| "junit"
 	| "meta"
 	| "pipeline";
@@ -125,8 +125,8 @@ export interface BiomeFileIssue {
 	fixable_warnings: number;
 }
 
-export interface DotnetCoverageMetricDocument extends CoverageMetricDocument {
-	metric_type: "coverage-dotnet";
+export interface CoberturaCoverageMetricDocument extends CoverageMetricDocument {
+	metric_type: "coverage-cobertura";
 	coverage_format: "cobertura" | "opencover" | (string & {});
 }
 
@@ -161,7 +161,7 @@ export type NormalizedDocument =
 	| LighthouseMetricDocument
 	| CoverageJsMetricDocument
 	| SarifMetricDocument
-	| DotnetCoverageMetricDocument
+	| CoberturaCoverageMetricDocument
 	| JunitMetricDocument
 	| MetaMetricDocument
 	| PipelineMetricDocument;

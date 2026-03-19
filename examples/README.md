@@ -17,7 +17,7 @@ Each example shows two options:
 | Biome | [azure-devops/biome.yml](azure-devops/biome.yml) |
 | SARIF | [azure-devops/sarif.yml](azure-devops/sarif.yml) |
 | Coverage JS | [azure-devops/coverage-js.yml](azure-devops/coverage-js.yml) |
-| Coverage .NET | [azure-devops/coverage-dotnet.yml](azure-devops/coverage-dotnet.yml) |
+| Coverage (Cobertura XML) | [azure-devops/coverage-cobertura.yml](azure-devops/coverage-cobertura.yml) |
 | Lighthouse | [azure-devops/lighthouse.yml](azure-devops/lighthouse.yml) |
 | **Monorepo (pnpm)** | [azure-devops/monorepo.yml](azure-devops/monorepo.yml) |
 | **.NET Solution** | [azure-devops/dotnet-solution.yml](azure-devops/dotnet-solution.yml) |
@@ -30,7 +30,7 @@ Each example shows two options:
 | Biome | [github-actions/biome.yml](github-actions/biome.yml) |
 | SARIF | [github-actions/sarif.yml](github-actions/sarif.yml) |
 | Coverage JS | [github-actions/coverage-js.yml](github-actions/coverage-js.yml) |
-| Coverage .NET | [github-actions/coverage-dotnet.yml](github-actions/coverage-dotnet.yml) |
+| Coverage (Cobertura XML) | [github-actions/coverage-cobertura.yml](github-actions/coverage-cobertura.yml) |
 | Lighthouse | [github-actions/lighthouse.yml](github-actions/lighthouse.yml) |
 | **Monorepo** | [github-actions/monorepo.yml](github-actions/monorepo.yml) |
 | **.NET Solution** | [github-actions/dotnet-solution.yml](github-actions/dotnet-solution.yml) |

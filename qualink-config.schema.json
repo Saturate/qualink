@@ -15,7 +15,7 @@
 					"eslint",
 					"biome",
 					"coverage-js",
-					"coverage-dotnet",
+					"coverage-cobertura",
 					"sarif",
 					"lighthouse",
 					"junit"

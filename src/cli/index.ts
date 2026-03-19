@@ -4,7 +4,7 @@ import type { MetricType, NormalizedDocument } from "../types.js";
 import { CliError } from "./cli-error.js";
 import {
 	biomeCommand,
-	coverageDotnetCommand,
+	coverageCoberturaCommand,
 	coverageJsCommand,
 	eslintCommand,
 	junitCommand,
@@ -51,7 +51,7 @@ const collectCommand = defineCommand({
 		lighthouse: lighthouseCommand,
 		"coverage-js": coverageJsCommand,
 		sarif: sarifCommand,
-		"coverage-dotnet": coverageDotnetCommand,
+		"coverage-cobertura": coverageCoberturaCommand,
 		junit: junitCommand,
 	},
 	async run({ args }) {

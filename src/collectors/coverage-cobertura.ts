@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { baseDocument } from "../normalize.js";
-import type { CommonMetadata, DotnetCoverageMetricDocument } from "../types.js";
+import type { CoberturaCoverageMetricDocument, CommonMetadata } from "../types.js";
 import { isRecord } from "../utils/guards.js";
 import { ratioPct } from "../utils/metrics.js";
 
@@ -56,10 +56,10 @@ function parseOpenCover(root: Record<string, unknown>): {
 	};
 }
 
-export function collectCoverageDotnet(
+export function collectCoverageCobertura(
 	xmlInput: string,
 	metadata: CommonMetadata,
-): DotnetCoverageMetricDocument[] {
+): CoberturaCoverageMetricDocument[] {
 	const parser = new XMLParser({
 		ignoreAttributes: false,
 		attributeNamePrefix: "@_",
@@ -97,10 +97,10 @@ export function collectCoverageDotnet(
 	const functionsTotal = 0;
 	const functionsCovered = 0;
 
-	const doc: DotnetCoverageMetricDocument = {
+	const doc: CoberturaCoverageMetricDocument = {
 		...baseDocument({
-			metricType: "coverage-dotnet",
-			tool: "dotnet-test",
+			metricType: "coverage-cobertura",
+			tool: "cobertura",
 			languages: ["csharp"],
 			metadata,
 		}),

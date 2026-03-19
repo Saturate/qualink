@@ -177,7 +177,7 @@ describe("collect --dir", () => {
 
 		expect(exitCode).toBe(0);
 		const summary = getSummaryLine(stdout);
-		expect(summary).toContain("coverage-dotnet");
+		expect(summary).toContain("coverage-cobertura");
 	});
 
 	it("discovers .sarif files", () => {

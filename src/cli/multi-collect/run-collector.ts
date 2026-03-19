@@ -1,5 +1,5 @@
 import { collectBiome } from "../../collectors/biome.js";
-import { collectCoverageDotnet } from "../../collectors/coverage-dotnet.js";
+import { collectCoverageCobertura } from "../../collectors/coverage-cobertura.js";
 import { collectCoverageJs } from "../../collectors/coverage-js.js";
 import { collectEslint } from "../../collectors/eslint.js";
 import { collectJunit } from "../../collectors/junit.js";
@@ -69,10 +69,10 @@ export async function runCollector(
 			return { metricType: "coverage-js", documents };
 		}
 
-		case "coverage-dotnet": {
+		case "coverage-cobertura": {
 			const input = await readTextFile(filePath);
-			const documents = collectCoverageDotnet(input, metadata);
-			return { metricType: "coverage-dotnet", documents };
+			const documents = collectCoverageCobertura(input, metadata);
+			return { metricType: "coverage-cobertura", documents };
 		}
 
 		case "sarif": {

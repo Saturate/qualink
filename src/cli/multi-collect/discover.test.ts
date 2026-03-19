@@ -48,7 +48,7 @@ describe("discoverFiles", () => {
 
 		const result = await discoverFiles(testDir);
 
-		expect(result.get("coverage-dotnet")).toHaveLength(1);
+		expect(result.get("coverage-cobertura")).toHaveLength(1);
 	});
 
 	it("finds cobertura-coverage.xml", async () => {
@@ -56,7 +56,7 @@ describe("discoverFiles", () => {
 
 		const result = await discoverFiles(testDir);
 
-		expect(result.get("coverage-dotnet")).toHaveLength(1);
+		expect(result.get("coverage-cobertura")).toHaveLength(1);
 	});
 
 	it("finds .sarif files", async () => {

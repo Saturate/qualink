@@ -137,7 +137,7 @@ export function resolveFileMetadata(filePath: string, collectorKey: string): Fil
 	const overrides: FileMetadataOverrides = {};
 
 	// Detect project name
-	if (collectorKey === "coverage-dotnet" || collectorKey === "sarif") {
+	if (collectorKey === "coverage-cobertura" || collectorKey === "sarif") {
 		overrides.projectName = findNearestProjectName(fileDir, stopAt) ?? null;
 	} else {
 		overrides.projectName = findNearestPackageName(fileDir, stopAt) ?? null;
