@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Miscellaneous
+
+- Update GitHub Actions to Node 24 (#20) by @Saturate in [#20](https://github.com/Saturate/qualink/pull/20) ([c33d123](https://github.com/Saturate/qualink/commit/c33d123edf7214faad4179bb9e9bbb29eda663b4))
+
+
 ## [0.6.1] - 2026-05-06
 
 ### Bug Fixes
