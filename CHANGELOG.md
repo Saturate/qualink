@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Bug Fixes
+
+- Remove broken npm upgrade step from release workflow (#21) by @Saturate in [#21](https://github.com/Saturate/qualink/pull/21) ([0c5a3aa](https://github.com/Saturate/qualink/commit/0c5a3aaff20d67ef1fbcbfcdeb9c9745c02e14d0))
+
+
 ### Miscellaneous
 
 - Update GitHub Actions to Node 24 (#20) by @Saturate in [#20](https://github.com/Saturate/qualink/pull/20) ([c33d123](https://github.com/Saturate/qualink/commit/c33d123edf7214faad4179bb9e9bbb29eda663b4))
