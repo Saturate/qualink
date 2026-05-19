@@ -4,6 +4,7 @@ import type { CommonMetadata, MetricType, NormalizedDocument } from "../types.js
 import { formatBytes } from "../utils/format.js";
 import { CliError } from "./cli-error.js";
 import { type CommonArgs, commonArgs, isDryRun } from "./common-args.js";
+import { log } from "./log.js";
 import { parseCommonMetadata } from "./parse-metadata.js";
 import { sendToSink } from "./send-to-sink.js";
 
@@ -37,7 +38,7 @@ export function createCollectorCommand<TExtra extends Record<string, unknown>>(
 				const inputPath = typeof parsedArgs.input === "string" ? parsedArgs.input : undefined;
 				if (inputPath) {
 					const fileStat = await stat(inputPath);
-					process.stderr.write(`  read: ${inputPath} (${formatBytes(fileStat.size)})\n`);
+					log(`  read: ${inputPath} (${formatBytes(fileStat.size)})`);
 				}
 				const metadata = parseCommonMetadata(parsedArgs);
 				const { metricType, documents } = await config.collect(parsedArgs, metadata);

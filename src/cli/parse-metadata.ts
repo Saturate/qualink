@@ -1,5 +1,6 @@
 import type { CommonMetadata } from "../types.js";
 import { asOptionalString } from "../utils/assert.js";
+import { VERSION } from "../version.js";
 import { CliError } from "./cli-error.js";
 import { argValue, type CommonArgs, envOrArg } from "./common-args.js";
 import {
@@ -12,7 +13,7 @@ import { detectProjectName } from "./detect-project.js";
 import { detectRepo } from "./detect-repo.js";
 import { detectSolution } from "./detect-solution.js";
 
-export const DEFAULT_COLLECTOR_VERSION = "0.1.0";
+export const DEFAULT_COLLECTOR_VERSION = VERSION;
 
 function parseTags(value: unknown): string[] {
 	if (typeof value !== "string" || value.trim().length === 0) {

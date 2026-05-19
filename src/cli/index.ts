@@ -1,6 +1,7 @@
 import { relative } from "node:path";
 import { defineCommand, runMain } from "citty";
 import type { MetricType, NormalizedDocument } from "../types.js";
+import { VERSION } from "../version.js";
 import { CliError } from "./cli-error.js";
 import {
 	biomeCommand,
@@ -14,6 +15,7 @@ import {
 	sarifCommand,
 } from "./commands/index.js";
 import { type CommonArgs, commonArgs, isDryRun } from "./common-args.js";
+import { error, log, warn } from "./log.js";
 import { parseConfig, resolveConfig } from "./multi-collect/config.js";
 import { discoverFiles } from "./multi-collect/discover.js";
 import type { CollectorKey } from "./multi-collect/patterns.js";
@@ -74,11 +76,12 @@ const collectCommand = defineCommand({
 
 async function runDirMode(dir: string, args: CommonArgs): Promise<void> {
 	const metadata = parseCommonMetadata(args);
+	log(`  category: ${metadata.category ?? "(none)"} | tags: ${metadata.tags.join(", ") || "(none)"}`);
 	const discovered = await discoverFiles(dir);
 
 	for (const [collectorKey, files] of discovered) {
 		for (const filePath of files) {
-			process.stderr.write(`  scan: ${relative(dir, filePath)} → ${collectorKey}\n`);
+			log(`  scan: ${relative(dir, filePath)} → ${collectorKey}`);
 		}
 	}
 
@@ -95,7 +98,7 @@ async function runDirMode(dir: string, args: CommonArgs): Promise<void> {
 				counts.set(collectorKey, (counts.get(collectorKey) ?? 0) + output.documents.length);
 			} catch (error) {
 				const msg = error instanceof Error ? error.message : String(error);
-				process.stderr.write(`warning: skipping ${filePath} (${collectorKey}): ${msg}\n`);
+				warn(`warning: skipping ${filePath} (${collectorKey}): ${msg}`);
 			}
 		}
 	}
@@ -106,12 +109,13 @@ async function runDirMode(dir: string, args: CommonArgs): Promise<void> {
 
 async function runConfigMode(configValue: string, args: CommonArgs): Promise<void> {
 	const metadata = parseCommonMetadata(args);
+	log(`  category: ${metadata.category ?? "(none)"} | tags: ${metadata.tags.join(", ") || "(none)"}`);
 	const entries = await parseConfig(configValue);
 	const resolved = await resolveConfig(entries, ".");
 
 	for (const entry of resolved) {
 		for (const filePath of entry.files) {
-			process.stderr.write(`  scan: ${filePath} → ${entry.type}\n`);
+			log(`  scan: ${filePath} → ${entry.type}`);
 		}
 	}
 
@@ -134,7 +138,7 @@ async function runConfigMode(configValue: string, args: CommonArgs): Promise<voi
 				counts.set(entry.type, (counts.get(entry.type) ?? 0) + output.documents.length);
 			} catch (error) {
 				const msg = error instanceof Error ? error.message : String(error);
-				process.stderr.write(`warning: skipping ${filePath} (${entry.type}): ${msg}\n`);
+				warn(`warning: skipping ${filePath} (${entry.type}): ${msg}`);
 			}
 		}
 	}
@@ -173,7 +177,7 @@ function printSummary(counts: Map<CollectorKey, number>, args: CommonArgs): void
 	}
 
 	if (total === 0) {
-		process.stderr.write("warning: no report files found\n");
+		warn("warning: no report files found");
 		return;
 	}
 
@@ -183,7 +187,7 @@ function printSummary(counts: Map<CollectorKey, number>, args: CommonArgs): void
 const main = defineCommand({
 	meta: {
 		name: "qualink",
-		version: "0.1.0",
+		version: VERSION,
 		description: "Collect, normalize, and relay code quality metrics",
 	},
 	subCommands: {
@@ -193,17 +197,17 @@ const main = defineCommand({
 	},
 });
 
-runMain(main).catch((error: unknown) => {
-	if (error instanceof CliError) {
-		process.stderr.write(`qualink error: ${error.message}\n`);
-		process.exit(error.exitCode);
+runMain(main).catch((err: unknown) => {
+	if (err instanceof CliError) {
+		error(`qualink error: ${err.message}`);
+		process.exit(err.exitCode);
 	}
 
-	if (error instanceof Error) {
-		process.stderr.write(`qualink error: ${error.message}\n`);
+	if (err instanceof Error) {
+		error(`qualink error: ${err.message}`);
 		process.exit(2);
 	}
 
-	process.stderr.write("qualink error: unknown failure\n");
+	error("qualink error: unknown failure");
 	process.exit(2);
 });

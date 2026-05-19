@@ -1,3 +1,4 @@
+import { error } from "../cli/log.js";
 import type { NormalizedDocument } from "../types.js";
 import type { SendInput, SendResult, Sink } from "./types.js";
 
@@ -118,7 +119,7 @@ export class LokiSink implements Sink {
 			const responseText = await response.text();
 
 			if (!isRetryableStatus(response.status) || attempt > this.retryMax) {
-				process.stderr.write(`[qualink] Dead-letter payload:\n${body}\n`);
+				error(`[qualink] Dead-letter payload:\n${body}\n`);
 				throw new Error(`Loki push failed (${response.status}): ${responseText}`);
 			}
 

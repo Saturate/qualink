@@ -1,3 +1,4 @@
+import { error } from "../cli/log.js";
 import type { MetricType, NormalizedDocument } from "../types.js";
 import { isRecord } from "../utils/guards.js";
 import type { SendInput, SendResult, Sink } from "./types.js";
@@ -118,7 +119,7 @@ export class ElasticSink implements Sink {
 			if (!response.ok) {
 				const responseText = await response.text();
 				if (!isRetryableStatus(response.status) || attempt > this.retryMax) {
-					process.stderr.write(`[qualink] Dead-letter payload:\n${body}`);
+					error(`[qualink] Dead-letter payload:\n${body}`);
 					throw new Error(`Elastic bulk request failed (${response.status}): ${responseText}`);
 				}
 
@@ -131,7 +132,7 @@ export class ElasticSink implements Sink {
 				const { retryable, nonRetryableErrors } = extractFailedItems(result, documents);
 
 				for (const errMsg of nonRetryableErrors) {
-					process.stderr.write(`[qualink] Non-retryable bulk item error: ${errMsg}\n`);
+					error(`[qualink] Non-retryable bulk item error: ${errMsg}\n`);
 				}
 
 				if (retryable.length === 0) {
@@ -146,7 +147,7 @@ export class ElasticSink implements Sink {
 
 				if (attempt > this.retryMax) {
 					const deadLetterBody = buildBulkBody(indexName, retryable);
-					process.stderr.write(`[qualink] Dead-letter payload:\n${deadLetterBody}`);
+					error(`[qualink] Dead-letter payload:\n${deadLetterBody}`);
 					throw new Error(
 						`Elastic bulk request failed after ${attempt} attempts with ${retryable.length} item error(s)`,
 					);
